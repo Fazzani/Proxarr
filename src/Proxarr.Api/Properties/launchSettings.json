@@ -1,0 +1,40 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchUrl": "http://localhost:5056/scalar/v1",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "TMDB_API_KEY": "38e2583fc9244b03ad8a59e5cba5f3f8",
+        "WATCH_PROVIDERS": "US:Netflix,US:Amazon Prime Video",
+        "Clients__0__ApiKey": "9b2ee4ab385446dda9a4c50de8401536",
+        "Clients__0__BaseUrl": "https://radarr.synker.ovh",
+        "Clients__1__ApiKey": "f085b5c7ddd94bcf9056bf1e5a03a4be",
+        "Clients__1__BaseUrl": "https://sonarr.synker.ovh",
+        "TAG_NAME": "q"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5056"
+    },
+    "https": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7064;http://localhost:5056"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "8881",
+        "ASPNETCORE_HTTP_PORTS": "8880"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
+}

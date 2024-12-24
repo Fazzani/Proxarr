@@ -1,0 +1,100 @@
+@Proxarr.Api_HostAddress = http://localhost:5056
+@Radarr.ApplicationUrl = https://radarr
+@Sonarr.ApplicationUrl = https://sonarr
+
+POST {{Proxarr.Api_HostAddress}}/Qualifier/movie
+Accept: application/json
+{
+  "movie": {
+    "id": 72,
+    "title": "Carry-On",
+    "year": 2024,
+    "releaseDate": "9999-12-31",
+    "folderPath": "/Videos/Videos/movies/Carry-On (2024)",
+    "tmdbId": 1005331,
+    "imdbId": "tt21382296",
+    "overview": "An airport security officer races to outsmart a mysterious traveler forcing him to let a dangerous item slip onto a Christmas Eve flight.",
+    "genres": [
+      "Action",
+      "Mystery",
+      "Thriller"
+    ],
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/72/poster.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/sjMN7DRi4sGiledsmllEw5HJjPy.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/72/fanart.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/rhc8Mtuo3Kh8CndnlmTNMF8o9pU.jpg"
+      }
+    ],
+    "tags": [],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    }
+  },
+  "addMethod": "manual",
+  "eventType": "MovieAdded",
+  "instanceName": "Radarr",
+  "applicationUrl": "{{Radarr.ApplicationUrl}}"
+}
+
+###
+
+POST {{Proxarr.Api_HostAddress}}/Qualifier/tv
+Accept: application/json
+{
+  "series": {
+    "id": 25,
+    "title": "Lost",
+    "titleSlug": "lost",
+    "path": "/Videos/Videos/shows/Lost",
+    "tvdbId": 73739,
+    "tvMazeId": 123,
+    "tmdbId": 4607,
+    "imdbId": "tt0411008",
+    "type": "standard",
+    "year": 2004,
+    "genres": [
+      "Action",
+      "Adventure",
+      "Drama",
+      "Fantasy",
+      "Mystery",
+      "Science Fiction",
+      "Thriller"
+    ],
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/25/banner.jpg?lastWrite=638707559740506834",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/73739-g4.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/25/poster.jpg?lastWrite=638707559740745300",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/73739-11.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/25/fanart.jpg?lastWrite=638707559742200054",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/73739-34.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/25/clearlogo.png?lastWrite=638707559742579613",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/73739/clearlogo/622b30b555156.png"
+      }
+    ],
+    "tags": [
+      "1 - heni"
+    ]
+  },
+  "eventType": "SeriesAdd",
+  "instanceName": "Sonarr",
+  "applicationUrl": "{{Sonarr.ApplicationUrl}}"
+}
