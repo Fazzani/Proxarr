@@ -1,0 +1,35 @@
+name: Feature Report
+description: File a new Feature Proposal Template
+title: "[Feature]: "
+labels: ["feature", "enhancement"]
+assignees:
+  - Fazzani
+body:
+  - type: markdown
+    attributes:
+      value: |
+        New Feature Proposal
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: short-description
+    attributes:
+      label: Short description
+      description: Provide a short single paragraph description for the feature.
+      placeholder: short description.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and Assumptions?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Provide a high level description of what did you expect to happen
+    validations:
+      required: false

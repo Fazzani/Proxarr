@@ -1,0 +1,60 @@
+---
+
+services:
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    restart: unless-stopped
+    container_name: "sonarr"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    ports:
+      - "8989:8989"
+    healthcheck:
+      test: curl --fail http://localhost:8989 || exit 1
+      interval: 20s
+      retries: 5
+      start_period: 7s
+      timeout: 10s
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    restart: unless-stopped
+    container_name: "radarr"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - "7878:7878"
+    healthcheck:
+      test: curl --fail http://localhost:7878 || exit 1
+      interval: 20s
+      retries: 5
+      start_period: 7s
+      timeout: 10s
+  
+  proxarr:
+    image: synker/proxarr:latest
+    container_name: proxarr
+    restart: unless-stopped
+    depends_on:
+      sonarr:
+        condition: service_healthy
+      radarr:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail http://localhost:8880/health || exit 1
+      interval: 10s
+      retries: 3
+      start_period: 5s
+      timeout: 3s
+    ports:
+      - "8880:8880"
+    environment:
+      - LOG_LEVEL=Information
+    volumes:
+      - ./:/app/config
+      - ./logs:/logs"
+    
