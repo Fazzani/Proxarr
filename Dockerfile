@@ -12,9 +12,9 @@ EXPOSE 8881
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Proxarr.Api/Proxarr.Api.csproj", "Proxarr.Api/"]
+COPY ["src/Proxarr.Api/Proxarr.Api.csproj", "Proxarr.Api/"]
 RUN dotnet restore "./Proxarr.Api/Proxarr.Api.csproj"
-COPY . .
+COPY ./src .
 WORKDIR "/src/Proxarr.Api"
 RUN dotnet build "./Proxarr.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
