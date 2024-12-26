@@ -16,7 +16,7 @@
   </a>
 
   <p align="center">
-    Simple proxy server that can be used to auto qualify requested item media based on their availability on countries watching providers.
+    Automatically categorize your requested movies and TV shows from your watching providers.
     <br />
     <a href="https://github.com/Fazzani/Proxarr"><strong>Explore the docs »</strong></a>
     <br />
@@ -54,60 +54,64 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Proxarr is a simple proxy server that can be used to auto qualify if item media maybe downloaded or not, based on their availability on countries watching providers. 
-It is written in .NET (c#).
+Proxarr is a lightweight proxy server for automatically qualify requested media items based in countries served by watching providers.
+It uses TMDB to find out which streaming services are available in the selected region.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* Acquire TMDB API KEY
+  [How](https://dev.to/codexive_zech/streamlining-your-contribution-how-to-get-your-tmdb-api-key-for-ldbflix-contribution-52gf#:~:text=How%20to%20Obtain%20a%20TMDB%20API%20Key)
+* Obtain SONARR/RADARR API KEY<br/>
+  <img src="images/arr_api_key.png" width="230">
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/Fazzani/Proxarr.git
-   ```
-3. Install NPM packages
+   ```  
+2. Update your [config.yml](./src/Proxarr.Api/config.yml) with your API keys according to your setup
+   ```yaml
+    AppConfiguration:
+        TMDB_API_KEY: "{{ TMDB API KEY}}"
+        TAG_NAME: "q"
+        WATCH_PROVIDERS: "YOUR PROVIDERS HERE seperated by comma (ex: FR:Netflix,US:Amazon Prime Video)"
+        Clients: # Add as many clients as you want
+        - ApiKey: "{{ SONAR OR RADARR API KEY }}"
+          BaseUrl: "{{ SONARR OR RADARR BASE URL }}"
+   ``` 
+   
+3. Run the application
    ```sh
-   npm install
+   dotnet run ./src/Proxarr.Api/Proxarr.Api.csproj
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin Fazzani/Proxarr
-   git remote -v # confirm the changes
-   ```
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### Standalone docker container example
 
 ```shell
-docker run -itd -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/config --name proxarr synker/proxarr:latest
+docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/config --name proxarr synker/proxarr:latest
 ```
+### Full example with docker compose
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
+```shell
+docker compose -f docker-compose.yml up -d
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Watching providers configuration
+
+[TMDB API to get available regions](https://developer.themoviedb.org/reference/watch-providers-available-regions)
+[TMDB API to get available movie providers by region](https://developer.themoviedb.org/reference/watch-providers-movie-list)
+[TMDB API to get available tv providers by region](https://developer.themoviedb.org/reference/watch-providers-tv-list)
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -115,11 +119,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Improve Docker tagging with git tag
 - [ ] Remove secrets from code
 - [ ] Add more providers (JustWatch, Reelgood, etc)
-- [ ] Add docker-compose example
 - [ ] Add more tests
 - [ ] Add more documentation
 - [ ] CI/CD pipeline PR
 - [ ] Improve logging and error handling
+- [ ] Full scan library
+- [ ] Api versioning
  
 See the [open issues](https://github.com/Fazzani/Proxarr/issues) for a full list of proposed features (and known issues).
 
@@ -176,4 +181,4 @@ Project Link: [https://github.com/Fazzani/Proxarr](https://github.com/Fazzani/Pr
 [license-url]: https://github.com/Fazzani/Proxarr/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/heni-fazzani
-[product-screenshot]: images/screenshot.png
+[arr-api-key]: images/arr_api_key.png

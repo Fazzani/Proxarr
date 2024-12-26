@@ -1,8 +1,10 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8880
-EXPOSE 8881
+
+ENV ASPNETCORE_HTTP_PORTS=8880
+
+EXPOSE $ASPNETCORE_HTTP_PORTS
 
 ENV LOG_FOLDER=/logs
 ENV LOG_LEVEL=Information
@@ -26,11 +28,20 @@ RUN dotnet publish "./Proxarr.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
+
 WORKDIR /app
 VOLUME ${LOG_FOLDER}/
 VOLUME ${CONFIG_PATH}/
 COPY --from=publish /app/publish .
 
-HEALTHCHECK --interval=10s --timeout=3s CMD curl -f http://localhost:8880/health || exit 1
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  curl \
+  && rm -rf /var/lib/apt/lists/*
+
+USER $APP_UID
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:$ASPNETCORE_HTTP_PORTS/health || exit 1
 
 ENTRYPOINT ["dotnet", "Proxarr.Api.dll"]

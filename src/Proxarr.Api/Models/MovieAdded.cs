@@ -8,7 +8,7 @@ namespace Proxarr.Api.Models
         public required Movie Movie { get; set; }
 
         [JsonPropertyName("addMethod")]
-        public string AddMethod { get; set; }
+        public string? AddMethod { get; set; }
 
         [JsonPropertyName("eventType")]
         public required string EventType { get; set; }
@@ -23,7 +23,7 @@ namespace Proxarr.Api.Models
     public class Movie
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public required int Id { get; set; }
 
         [JsonPropertyName("title")]
         public required string Title { get; set; }
@@ -32,7 +32,7 @@ namespace Proxarr.Api.Models
         public int Year { get; set; }
 
         [JsonPropertyName("releaseDate")]
-        public string ReleaseDate { get; set; }
+        public string? ReleaseDate { get; set; }
 
         [JsonPropertyName("folderPath")]
         public required string FolderPath { get; set; }
@@ -41,42 +41,42 @@ namespace Proxarr.Api.Models
         public int TmdbId { get; set; }
 
         [JsonPropertyName("imdbId")]
-        public string ImdbId { get; set; }
+        public string? ImdbId { get; set; }
 
         [JsonPropertyName("overview")]
-        public string Overview { get; set; }
+        public string? Overview { get; set; }
 
         [JsonPropertyName("genres")]
-        public string[] Genres { get; set; }
+        public string[]? Genres { get; set; }
 
         [JsonPropertyName("images")]
-        public Image[] Images { get; set; }
+        public Image[]? Images { get; set; }
 
         [JsonPropertyName("tags")]
-        public string[] Tags { get; set; }
+        public string[]? Tags { get; set; }
 
         [JsonPropertyName("originalLanguage")]
-        public Originallanguage OriginalLanguage { get; set; }
+        public Originallanguage? OriginalLanguage { get; set; }
     }
 
     public class Originallanguage
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
     public class Image
     {
         [JsonPropertyName("coverType")]
-        public string CoverType { get; set; }
+        public string? CoverType { get; set; }
 
         [JsonPropertyName("url")]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
         [JsonPropertyName("remoteUrl")]
-        public string RemoteUrl { get; set; }
+        public string? RemoteUrl { get; set; }
     }
 }

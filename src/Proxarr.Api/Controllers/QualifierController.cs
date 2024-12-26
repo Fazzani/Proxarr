@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Proxarr.Api.Models;
 using Proxarr.Api.Services;
+using TMDbLib.Objects.Movies;
 
 namespace Proxarr.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class QualifierController : ControllerBase
     {
         private readonly ILogger<QualifierController> _logger;
@@ -26,7 +27,13 @@ namespace Proxarr.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> QualifiedMovie(MovieAdded movie, CancellationToken cancellationToken)
         {
+            if (movie.EventType.Equals("test", StringComparison.OrdinalIgnoreCase))
+            {
+                return Ok();
+            }
+
             var result = await _radarrService.Qualify(movie, cancellationToken).ConfigureAwait(false);
+
             if (result == nameof(NotFound))
             {
                 _logger.LogError("Movie not found in Radarr {Title}", movie.Movie.Title);
@@ -40,7 +47,13 @@ namespace Proxarr.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> QualifiedTv(TvAdded tvAdded, CancellationToken cancellationToken)
         {
+            if (tvAdded.EventType.Equals("test", StringComparison.OrdinalIgnoreCase))
+            {
+                return Ok();
+            }
+
             var result = await _sonarrService.Qualify(tvAdded, cancellationToken).ConfigureAwait(false);
+
             if (result == nameof(NotFound))
             {
                 _logger.LogError("Tv not found in Sonarr {Title}", tvAdded.Series.Title);

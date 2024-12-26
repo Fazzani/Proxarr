@@ -2,7 +2,7 @@
 Logging:
   LogLevel:
     Default: "Information"
-    Microsoft.AspNetCore: Warning
+    Microsoft.AspNetCore: Information
 Serilog:
   Using:
   - Serilog.Sinks.Console
@@ -10,8 +10,8 @@ Serilog:
   MinimumLevel:
     Default: "Information"
     Override:
-      Microsoft: Warning
-      System: Warning
+      Microsoft: Information
+      System: Information
   Enrich:
   - FromLogContext
   - WithMachineName

@@ -2,7 +2,9 @@
 @Radarr.ApplicationUrl = https://radarr
 @Sonarr.ApplicationUrl = https://sonarr
 
-POST {{Proxarr.Api_HostAddress}}/Qualifier/movie
+### Movie qualify endpoint
+
+POST {{Proxarr.Api_HostAddress}}/api/qualifier/movie
 Content-Type: application/json
 Accept: application/json
 {
@@ -44,9 +46,46 @@ Accept: application/json
   "applicationUrl": "{{Radarr.ApplicationUrl}}"
 }
 
-###
+### Movie qualify endpoint TEST
 
-POST {{Proxarr.Api_HostAddress}}/Qualifier/tv
+POST {{Proxarr.Api_HostAddress}}/api/qualifier/movie
+Content-Type: application/json
+Accept: application/json
+{
+  "movie": {
+    "id": 1,
+    "title": "Test Title",
+    "year": 1970,
+    "releaseDate": "1970-01-01",
+    "folderPath": "C:\\testpath",
+    "tmdbId": 0,
+    "tags": [
+      "test-tag"
+    ]
+  },
+  "remoteMovie": {
+    "tmdbId": 1234,
+    "imdbId": "5678",
+    "title": "Test title",
+    "year": 1970
+  },
+  "release": {
+    "quality": "Test Quality",
+    "qualityVersion": 1,
+    "releaseGroup": "Test Group",
+    "releaseTitle": "Test Title",
+    "indexer": "Test Indexer",
+    "size": 9999999,
+    "customFormatScore": 0
+  },
+  "eventType": "Test",
+  "instanceName": "Radarr",
+  "applicationUrl": "https://radarr.synker.ovh"
+}
+
+### TV qualify endpoint
+
+POST {{Proxarr.Api_HostAddress}}/api/qualifier/tv
 Content-Type: application/json
 Accept: application/json
 {
@@ -99,4 +138,38 @@ Accept: application/json
   "eventType": "SeriesAdd",
   "instanceName": "Sonarr",
   "applicationUrl": "{{Sonarr.ApplicationUrl}}"
+}
+
+### TV qualify endpoint TEST
+
+POST {{Proxarr.Api_HostAddress}}/api/qualifier/tv
+Content-Type: application/json
+Accept: application/json
+{
+  "series": {
+    "id": 1,
+    "title": "Test Title",
+    "path": "C:\\testpath",
+    "tvdbId": 1234,
+    "tvMazeId": 0,
+    "tmdbId": 0,
+    "type": "standard",
+    "year": 0,
+    "tags": [
+      "test-tag"
+    ]
+  },
+  "episodes": [
+    {
+      "id": 123,
+      "episodeNumber": 1,
+      "seasonNumber": 1,
+      "title": "Test title",
+      "seriesId": 0,
+      "tvdbId": 0
+    }
+  ],
+  "eventType": "Test",
+  "instanceName": "Sonarr",
+  "applicationUrl": "http://sonarr"
 }

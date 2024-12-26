@@ -14,22 +14,22 @@ namespace Proxarr.Api.Models
         public required string InstanceName { get; set; }
 
         [JsonPropertyName("applicationUrl")]
-        public string ApplicationUrl { get; set; }
+        public required string ApplicationUrl { get; set; }
     }
 
     public class Series
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public required int Id { get; set; }
 
         [JsonPropertyName("title")]
         public required string Title { get; set; }
 
         [JsonPropertyName("titleSlug")]
-        public string TitleSlug { get; set; }
+        public string? TitleSlug { get; set; }
 
         [JsonPropertyName("path")]
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         [JsonPropertyName("tvdbId")]
         public int TvdbId { get; set; }
@@ -41,21 +41,21 @@ namespace Proxarr.Api.Models
         public int TmdbId { get; set; }
 
         [JsonPropertyName("imdbId")]
-        public string ImdbId { get; set; }
+        public string? ImdbId { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [JsonPropertyName("year")]
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
         [JsonPropertyName("genres")]
-        public string[] Genres { get; set; }
+        public string[]? Genres { get; set; }
 
         [JsonPropertyName("images")]
-        public Image[] Images { get; set; }
+        public Image[]? Images { get; set; }
 
         [JsonPropertyName("tags")]
-        public string[] Tags { get; set; }
+        public string[]? Tags { get; set; }
     }
 }
