@@ -3,11 +3,20 @@ using Proxarr.Api.Core;
 using Proxarr.Api.Services;
 using Radarr.Http.Client;
 using Scalar.AspNetCore;
+using Serilog;
 using Sonarr.Http.Client;
 using TMDbLib.Client;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 

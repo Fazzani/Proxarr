@@ -1,3 +1,4 @@
+<a id="readme-top"></a>
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -11,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Fazzani/Proxarr">
-    <img src="images/logo.png" alt="Logo" width="280" height="280">
+    <img src="images/logo.png" alt="Logo" width="320" height="320">
   </a>
 
   <p align="center">

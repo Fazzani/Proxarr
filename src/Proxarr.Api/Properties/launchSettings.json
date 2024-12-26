@@ -6,13 +6,14 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "LOG_FOLDER": "../..",
+        "TAG_NAME": "q",
         "TMDB_API_KEY": "38e2583fc9244b03ad8a59e5cba5f3f8",
         "WATCH_PROVIDERS": "US:Netflix,US:Amazon Prime Video",
         "Clients__0__ApiKey": "9b2ee4ab385446dda9a4c50de8401536",
         "Clients__0__BaseUrl": "https://radarr.synker.ovh",
         "Clients__1__ApiKey": "f085b5c7ddd94bcf9056bf1e5a03a4be",
-        "Clients__1__BaseUrl": "https://sonarr.synker.ovh",
-        "TAG_NAME": "q"
+        "Clients__1__BaseUrl": "https://sonarr.synker.ovh"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5056"
