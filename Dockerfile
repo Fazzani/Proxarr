@@ -5,9 +5,9 @@ EXPOSE 8880
 EXPOSE 8881
 
 ENV LOG_FOLDER=/logs
-ENV LOG_LEVEL
+ENV LOG_LEVEL=Information
 ENV CONFIG_PATH=/app/config
-ENV Serilog__MinimumLevel=${LOG_LEVEL:-Information}
+ENV Serilog__MinimumLevel=${LOG_LEVEL
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
