@@ -30,4 +30,7 @@ WORKDIR /app
 VOLUME ${LOG_FOLDER}/
 VOLUME ${CONFIG_PATH}/
 COPY --from=publish /app/publish .
+
+HEALTHCHECK --interval=10s --timeout=3s CMD curl -f http://localhost:8880/health || exit 1
+
 ENTRYPOINT ["dotnet", "Proxarr.Api.dll"]

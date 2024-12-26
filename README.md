@@ -115,7 +115,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Improve Docker tagging with git tag
 - [ ] Remove secrets from code
 - [ ] Add more providers (JustWatch, Reelgood, etc)
-- [ ] Health check app/docker
 - [ ] Add docker-compose example
 - [ ] Add more tests
 - [ ] Add more documentation
