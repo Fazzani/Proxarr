@@ -3,6 +3,7 @@
 @Sonarr.ApplicationUrl = https://sonarr
 
 POST {{Proxarr.Api_HostAddress}}/Qualifier/movie
+Content-Type: application/json
 Accept: application/json
 {
   "movie": {
@@ -46,6 +47,7 @@ Accept: application/json
 ###
 
 POST {{Proxarr.Api_HostAddress}}/Qualifier/tv
+Content-Type: application/json
 Accept: application/json
 {
   "series": {

@@ -1,4 +1,5 @@
-﻿using Proxarr.Api.Models;
+﻿using Microsoft.Extensions.Options;
+using Proxarr.Api.Models;
 using Radarr.Http.Client;
 using TMDbLib.Client;
 
@@ -13,12 +14,12 @@ namespace Proxarr.Api.Services
 
         public RadarrService(ILogger<RadarrService> logger,
                              TMDbClient tMDbClient,
-                             AppConfiguration appConfiguration,
+                             IOptions<AppConfiguration> appConfiguration,
                              RadarrClient radarrClient)
         {
             _logger = logger;
             _tMDbClient = tMDbClient;
-            _appConfiguration = appConfiguration;
+            _appConfiguration = appConfiguration?.Value ?? throw new ArgumentNullException(nameof(appConfiguration));
             _radarrClient = radarrClient;
         }
 
@@ -90,7 +91,7 @@ namespace Proxarr.Api.Services
 
             if (updated)
             {
-                await AddTag(movieRadarr, updated, existingTags, _appConfiguration.QualifiedTagName, cancellationToken).ConfigureAwait(false);
+                await AddTag(movieRadarr, updated, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
             }
 
             return updated;

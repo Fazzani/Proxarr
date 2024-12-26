@@ -1,4 +1,5 @@
-﻿using Proxarr.Api.Models;
+﻿using Microsoft.Extensions.Options;
+using Proxarr.Api.Models;
 using Sonarr.Http.Client;
 using TMDbLib.Client;
 
@@ -13,12 +14,12 @@ namespace Proxarr.Api.Services
 
         public SonarrService(ILogger<SonarrService> logger,
                              TMDbClient tMDbClient,
-                             AppConfiguration appConfiguration,
+                             IOptions<AppConfiguration> appConfiguration,
                              SonarrClient sonarrClient)
         {
             _logger = logger;
             _tMDbClient = tMDbClient;
-            _appConfiguration = appConfiguration;
+            _appConfiguration = appConfiguration?.Value ?? throw new ArgumentNullException(nameof(appConfiguration));
             _sonarrClient = sonarrClient;
         }
 
@@ -91,7 +92,7 @@ namespace Proxarr.Api.Services
 
             if (updated)
             {
-                await AddTag(seriesSonarr, updated, existingTags, _appConfiguration.QualifiedTagName, cancellationToken).ConfigureAwait(false);
+                await AddTag(seriesSonarr, updated, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
             }
 
             return updated;

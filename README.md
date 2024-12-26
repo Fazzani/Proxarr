@@ -101,6 +101,10 @@ This is an example of how to list things you need to use the software and how to
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
+```shell
+docker run -itd -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/config --name proxarr synker/proxarr:latest
+```
+
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -108,6 +112,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
+- [ ] Improve Docker tagging with git tag
 - [ ] Remove secrets from code
 - [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Health check app/docker
@@ -116,7 +121,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Add more documentation
 - [ ] CI/CD pipeline PR
 - [ ] Improve logging and error handling
-- [ ] Expose config/logging to volume
  
 See the [open issues](https://github.com/Fazzani/Proxarr/issues) for a full list of proposed features (and known issues).
 

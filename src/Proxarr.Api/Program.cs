@@ -10,6 +10,15 @@ using TMDbLib.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load configuration
+
+var configDirPath = Environment.GetEnvironmentVariable("CONFIG_PATH") ?? Directory.GetCurrentDirectory();
+builder.Configuration
+    .AddEnvironmentVariables()
+    .AddYamlFile(Path.Combine(configDirPath, "config.yml"), optional: false, reloadOnChange: true);
+
+// Add log configuration
+
 var logger = new LoggerConfiguration()
   .ReadFrom.Configuration(builder.Configuration)
   .Enrich.FromLogContext()
@@ -24,8 +33,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton(x => new TMDbClient(Environment.GetEnvironmentVariable("TMDB_API_KEY")));
-builder.Services.AddSingleton<AppConfiguration>();
+builder.Services.AddSingleton(x => new TMDbClient(builder.Configuration.GetValue<string>("AppConfiguration:TMDB_API_KEY")));
+builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(AppConfiguration.SectionName));
 builder.Services.AddTransient<ApiKeyDelegatingHandler>();
 builder.Services.AddScoped<IRadarrService, RadarrService>();
 builder.Services.AddScoped<ISonarrService, SonarrService>();

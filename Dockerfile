@@ -4,15 +4,10 @@ WORKDIR /app
 EXPOSE 8880
 EXPOSE 8881
 
-ENV LOG_FOLDER=/var/log/Proxarr
-ENV LOG_LEVEL=Information
-ENV TMDB_API_KEY
-ENV WATCH_PROVIDERS=US:Netflix,US:Amazon Prime Video
-ENV TAG_NAME=q
-ENV Clients__0__ApiKey
-ENV Clients__0__BaseUrl
-ENV Clients__1__ApiKey
-ENV Clients__1__BaseUrl
+ENV LOG_FOLDER=/logs
+ENV LOG_LEVEL
+ENV CONFIG_PATH=/app/config
+ENV Serilog__MinimumLevel=${LOG_LEVEL:-Information}
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -32,6 +27,7 @@ RUN dotnet publish "./Proxarr.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
-VOLUME ${LOG_LEVEL}/
+VOLUME ${LOG_FOLDER}/
+VOLUME ${CONFIG_PATH}/
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Proxarr.Api.dll"]
