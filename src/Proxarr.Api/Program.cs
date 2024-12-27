@@ -36,7 +36,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton(x => new TMDbClient(builder.Configuration.GetValue<string>("AppConfiguration:TMDB_API_KEY")));
-builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(AppConfiguration.SectionName));
+builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(AppConfiguration.SECTION_NAME));
 builder.Services.AddTransient<ApiKeyDelegatingHandler>();
 builder.Services.AddScoped<IRadarrService, RadarrService>();
 builder.Services.AddScoped<ISonarrService, SonarrService>();

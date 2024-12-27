@@ -9,7 +9,7 @@ Content-Type: application/json
 Accept: application/json
 {
   "movie": {
-    "id": 72,
+    "id": 75,
     "title": "Carry-On",
     "year": 2024,
     "releaseDate": "9999-12-31",
@@ -19,22 +19,23 @@ Accept: application/json
     "overview": "An airport security officer races to outsmart a mysterious traveler forcing him to let a dangerous item slip onto a Christmas Eve flight.",
     "genres": [
       "Action",
-      "Mystery",
       "Thriller"
     ],
     "images": [
       {
         "coverType": "poster",
-        "url": "/MediaCover/72/poster.jpg",
+        "url": "/MediaCover/75/poster.jpg",
         "remoteUrl": "https://image.tmdb.org/t/p/original/sjMN7DRi4sGiledsmllEw5HJjPy.jpg"
       },
       {
         "coverType": "fanart",
-        "url": "/MediaCover/72/fanart.jpg",
+        "url": "/MediaCover/75/fanart.jpg",
         "remoteUrl": "https://image.tmdb.org/t/p/original/rhc8Mtuo3Kh8CndnlmTNMF8o9pU.jpg"
       }
     ],
-    "tags": [],
+    "tags": [
+      "1 - heni"
+    ],
     "originalLanguage": {
       "id": 1,
       "name": "English"
@@ -43,7 +44,7 @@ Accept: application/json
   "addMethod": "manual",
   "eventType": "MovieAdded",
   "instanceName": "Radarr",
-  "applicationUrl": "{{Radarr.ApplicationUrl}}"
+  "applicationUrl": "https://radarr.synker.ovh"
 }
 
 ### Movie qualify endpoint TEST

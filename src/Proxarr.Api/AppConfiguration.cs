@@ -2,7 +2,7 @@
 {
     public sealed class AppConfiguration
     {
-        public const string SectionName = nameof(AppConfiguration);
+        public const string SECTION_NAME = nameof(AppConfiguration);
 
         public string LOG_FOLDER { get; set; }
 

@@ -5,7 +5,7 @@ using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
 {
-    public class SonarrService: ISonarrService
+    public class SonarrService : ISonarrService
     {
         private readonly ILogger<SonarrService> _logger;
         private readonly TMDbClient _tMDbClient;
@@ -46,22 +46,20 @@ namespace Proxarr.Api.Services
                     return "NotFound";
                 }
 
-                if (await UpdateTags(tmdbItem, seriesSonarr, cancellationToken).ConfigureAwait(false))
-                {
-                    await _sonarrClient
-                    .SeriesPUTAsync(false, seriesSonarr.Id.ToString(), seriesSonarr, cancellationToken)
-                    .ConfigureAwait(false);
-                }
+                await UpdateTags(tmdbItem, seriesSonarr, cancellationToken).ConfigureAwait(false);
+                await _sonarrClient
+                .SeriesPUTAsync(false, seriesSonarr.Id.ToString(), seriesSonarr, cancellationToken)
+                .ConfigureAwait(false);
             }
 
             return string.Empty;
         }
 
-        private async Task<bool> UpdateTags(TMDbLib.Objects.TvShows.TvShow tmdbItem,
+        private async Task UpdateTags(TMDbLib.Objects.TvShows.TvShow tmdbItem,
                                             SeriesResource seriesSonarr,
                                             CancellationToken cancellationToken)
         {
-            var updated = false;
+            var matched = false;
             var existingTags = await _sonarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);
 
             foreach (var provider in _appConfiguration.WatchProviders)
@@ -75,8 +73,8 @@ namespace Proxarr.Api.Services
                         if (matchedProvider.Free?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true ||
                             matchedProvider.FlatRate?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
-                            _logger.LogInformation("Found Free/FlatRate provider {WatchProvider} for {Title}", pr, seriesSonarr.Title);
-                            updated = await AddTag(seriesSonarr, updated, existingTags, providerTag, cancellationToken).ConfigureAwait(false);
+                            _logger.LogInformation("Matched Free/FlatRate provider {WatchProvider} for {Title}", pr, seriesSonarr.Title);
+                            matched |= await AddTag(seriesSonarr, matched, existingTags, providerTag, cancellationToken).ConfigureAwait(false);
                         }
                         if (matchedProvider.Buy?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
@@ -90,12 +88,10 @@ namespace Proxarr.Api.Services
                 }
             }
 
-            if (updated)
+            if (!matched)
             {
-                await AddTag(seriesSonarr, updated, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
+                await AddTag(seriesSonarr, matched, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
             }
-
-            return updated;
         }
 
         private async Task<bool> AddTag(SeriesResource seriesSonarr,

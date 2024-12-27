@@ -18,14 +18,9 @@
   <p align="center">
     Automatically categorize your requested movies and TV shows from your watching providers.
     <br />
-    <a href="https://github.com/Fazzani/Proxarr"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Fazzani/Proxarr">View Demo</a>
-    ·
-    <a href="https://github.com/Fazzani/Proxarr/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    ·
-    <a href="https://github.com/Fazzani/Proxarr/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/Fazzani/Proxarr/issues/new?labels=bug&template=bug-report.yml">Report Bug</a>
+    Â·
+    <a href="https://github.com/Fazzani/Proxarr/issues/new?labels=enhancement&template=feature-request.yml">Request Feature</a>
   </p>
 </div>
 
@@ -74,7 +69,8 @@ It uses TMDB to find out which streaming services are available in the selected 
 1. Clone the repo
    ```sh
    git clone https://github.com/Fazzani/Proxarr.git
-   ```  
+   ```
+  
 2. Update your [config.yml](./src/Proxarr.Api/config.yml) with your API keys according to your setup
    ```yaml
     AppConfiguration:
@@ -109,14 +105,13 @@ docker compose -f docker-compose.yml up -d
 
 ### Watching providers configuration
 
-[TMDB API to get available regions](https://developer.themoviedb.org/reference/watch-providers-available-regions)
-[TMDB API to get available movie providers by region](https://developer.themoviedb.org/reference/watch-providers-movie-list)
-[TMDB API to get available tv providers by region](https://developer.themoviedb.org/reference/watch-providers-tv-list)
+- [TMDB API to get available regions](https://developer.themoviedb.org/reference/watch-providers-available-regions)
+- [TMDB API to get available movie providers by region](https://developer.themoviedb.org/reference/watch-providers-movie-list)
+- [TMDB API to get available tv providers by region](https://developer.themoviedb.org/reference/watch-providers-tv-list)
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Improve Docker tagging with git tag
 - [ ] Remove secrets from code
 - [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Add more tests

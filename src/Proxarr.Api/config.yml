@@ -1,8 +1,4 @@
 ---
-Logging:
-  LogLevel:
-    Default: "Information"
-    Microsoft.AspNetCore: Information
 Serilog:
   Using:
   - Serilog.Sinks.Console
@@ -23,15 +19,14 @@ Serilog:
     Args:
       path: "%LOG_FOLDER%/Serilog.log"
       rollingInterval: Day
-      outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {CorrelationId} {Level:u3}]
-        {Username} {Message:lj}{NewLine}{Exception}"
+      outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {CorrelationId} {Level:u3}] {Username} {Message:lj}{NewLine}{Exception}"
 AllowedHosts: "*"
 AppConfiguration:
-  TMDB_API_KEY: "38e2583fc9244b03ad8a59e5cba5f3f8"
+  TMDB_API_KEY: 38e2583fc9244b03ad8a59e5cba5f3f8
   TAG_NAME: "q"
   WATCH_PROVIDERS: "FR:Netflix,US:Amazon Prime Video"
   Clients:
-    - ApiKey: "9b2ee4ab385446dda9a4c50de8401536"
+    - ApiKey: 9b2ee4ab385446dda9a4c50de8401536
       BaseUrl: "https://radarr.synker.ovh"
-    - ApiKey: "f085b5c7ddd94bcf9056bf1e5a03a4be"
+    - ApiKey: f085b5c7ddd94bcf9056bf1e5a03a4be
       BaseUrl: "https://sonarr.synker.ovh"

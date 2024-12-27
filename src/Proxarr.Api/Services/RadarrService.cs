@@ -45,22 +45,20 @@ namespace Proxarr.Api.Services
                     return "NotFound";
                 }
 
-                if (await UpdateTags(tmdbItem, movieRadarr, cancellationToken).ConfigureAwait(false))
-                {
-                    await _radarrClient
-                    .MoviePUTAsync(false, movieRadarr.Id.ToString(), movieRadarr, cancellationToken)
-                    .ConfigureAwait(false);
-                }
+                await UpdateTags(tmdbItem, movieRadarr, cancellationToken).ConfigureAwait(false);
+                await _radarrClient
+                .MoviePUTAsync(false, movieRadarr.Id.ToString(), movieRadarr, cancellationToken)
+                .ConfigureAwait(false);
             }
 
             return string.Empty;
         }
 
-        private async Task<bool> UpdateTags(TMDbLib.Objects.Movies.Movie tmdbItem,
+        private async Task UpdateTags(TMDbLib.Objects.Movies.Movie tmdbItem,
                                             MovieResource movieRadarr,
                                             CancellationToken cancellationToken)
         {
-            var updated = false;
+            var matched = false;
             var existingTags = await _radarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);
 
             foreach (var provider in _appConfiguration.WatchProviders)
@@ -74,8 +72,8 @@ namespace Proxarr.Api.Services
                         if (matchedProvider.Free?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true ||
                             matchedProvider.FlatRate?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
-                            _logger.LogInformation("Found Free/FlatRate provider {WatchProvider} for {Title}", pr, movieRadarr.Title);
-                            updated = await AddTag(movieRadarr, updated, existingTags, providerTag, cancellationToken).ConfigureAwait(false);
+                            _logger.LogInformation("Matched Free/FlatRate provider {WatchProvider} for {Title}", pr, movieRadarr.Title);
+                            matched |= await AddTag(movieRadarr, matched, existingTags, providerTag, cancellationToken).ConfigureAwait(false);
                         }
                         if (matchedProvider.Buy?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
@@ -89,12 +87,10 @@ namespace Proxarr.Api.Services
                 }
             }
 
-            if (updated)
+            if (!matched)
             {
-                await AddTag(movieRadarr, updated, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
+                await AddTag(movieRadarr, matched, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
             }
-
-            return updated;
         }
 
         private async Task<bool> AddTag(MovieResource movieRadarr,
