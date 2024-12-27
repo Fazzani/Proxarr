@@ -22,7 +22,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{9E72FE54-7CE0-447E-B7E6-15EC4A05CDA3}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\ISSUE_TEMPLATE\bug-report.yml = ..\.github\ISSUE_TEMPLATE\bug-report.yml
+		..\.github\workflows\docker-image.yml = ..\.github\workflows\docker-image.yml
 		..\.github\ISSUE_TEMPLATE\feature-request.yml = ..\.github\ISSUE_TEMPLATE\feature-request.yml
+		..\.github\workflows\pr.yml = ..\.github\workflows\pr.yml
 		..\.github\pull_request_template.md = ..\.github\pull_request_template.md
 		..\.github\release.yml = ..\.github\release.yml
 	EndProjectSection

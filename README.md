@@ -116,7 +116,6 @@ docker compose -f docker-compose.yml up -d
 - [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Add more tests
 - [ ] Add more documentation
-- [ ] CI/CD pipeline PR
 - [ ] Improve logging and error handling
 - [ ] Full scan library
 - [ ] Api versioning
