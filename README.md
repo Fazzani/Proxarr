@@ -8,6 +8,8 @@
 
 [![Docker Image CI](https://github.com/Fazzani/Proxarr/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Fazzani/Proxarr/actions/workflows/docker-image.yml)
 
+[![.NET](https://github.com/Fazzani/Proxarr/actions/workflows/pr.yml/badge.svg)](https://github.com/Fazzani/Proxarr/actions/workflows/pr.yml)
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
