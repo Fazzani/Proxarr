@@ -26,6 +26,31 @@ namespace Proxarr.Api.Services
         }
 
         //<inheritdoc/>
+        public async Task FullScan(CancellationToken cancellationToken)
+        {
+            foreach (var client in _appConfiguration.Clients.Where(x => x.IsSonarr))
+            {
+                _sonarrClient.BaseUrl = client.BaseUrl;
+
+                var series = await _sonarrClient
+                    .SeriesAll2Async(null, null, cancellationToken)
+                    .ConfigureAwait(false);
+
+                foreach (var tv in series)
+                {
+                    _logger.LogInformation("Rescanning TV {Title}", tv.Title);
+
+                    await Qualify(new TvAdded
+                    {
+                        ApplicationUrl = _sonarrClient.BaseUrl,
+                        EventType = "FULL_SCAN",
+                        Series = new Series { Id = tv.Id, TmdbId = tv.TmdbId, Title = tv.Title }
+                    }, cancellationToken);
+                }
+            }
+        }
+
+        //<inheritdoc/>
         public async Task<string> Qualify(TvAdded tvAdded, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(tvAdded);
@@ -62,7 +87,7 @@ namespace Proxarr.Api.Services
                                       CancellationToken cancellationToken)
         {
             var matched = false;
-            var existingTags = await _sonarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);
+            var existedTags = await _sonarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);
 
             foreach (var provider in _appConfiguration.WatchProviders)
             {
@@ -76,7 +101,7 @@ namespace Proxarr.Api.Services
                             matchedProvider.FlatRate?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
                             _logger.LogInformation("Matched Free/FlatRate provider {WatchProvider} for {Title}", pr, seriesSonarr.Title);
-                            matched |= await AddTag(seriesSonarr, matched, existingTags, providerTag, cancellationToken).ConfigureAwait(false);
+                            matched |= await AddTag(seriesSonarr, matched, existedTags, providerTag, cancellationToken).ConfigureAwait(false);
                         }
                         if (matchedProvider.Buy?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
@@ -92,7 +117,7 @@ namespace Proxarr.Api.Services
 
             if (!matched)
             {
-                await AddTag(seriesSonarr, matched, existingTags, _appConfiguration.TAG_NAME, cancellationToken).ConfigureAwait(false);
+                await AddTag(seriesSonarr, matched, existedTags, _appConfiguration.TAG_NAME!, cancellationToken).ConfigureAwait(false);
             }
         }
 

@@ -4,16 +4,21 @@
     {
         public const string SECTION_NAME = nameof(AppConfiguration);
 
-        public string LOG_FOLDER { get; set; }
+        public string? LOG_FOLDER { get; set; }
 
-        public string TAG_NAME { get; set; }
+        public string? TAG_NAME { get; set; }
 
-        public string TMDB_API_KEY { get; set; }
+        public required string TMDB_API_KEY { get; set; }
+
+        public string FULL_SCAN_CRON { get; set; } = "0 6 * * 1";
+
+        public List<ClientInstance> Clients { get; set; }
 
         private Dictionary<string, string[]> _watchProviders;
 
         /// <summary>
-        /// Watch providers (ex: US:Netflix,US:Amazon Prime Video)
+        /// Transform Watch providers (ex: US:Netflix,US:Amazon Prime Video) to a dictionary
+        /// grouped by region
         /// </summary>
         public Dictionary<string, string[]> WatchProviders
         {
@@ -32,9 +37,9 @@
 
             var dict = new Dictionary<string, string[]>();
 
-            foreach (var region in WATCH_PROVIDERS!.Split(','))
+            foreach (var item in WATCH_PROVIDERS!.Split(','))
             {
-                var parts = region.Split(':');
+                var parts = item.Split(':');
                 if (parts.Length != 2)
                 {
                     throw new FormatException("Malformed WATCH_PROVIDERS! Must follow this format: REGION:WatchProvider, REGION:WatchProvider, ... ex (US:Netflix,FR:Youtube)");
@@ -51,5 +56,18 @@
 
             return dict;
         }
+    }
+
+    public sealed class ClientInstance
+    {
+        /// <summary>
+        /// The name of the application (Sonarr or Radarr)
+        /// </summary>
+        public required string Application { get; set; }
+        public required string BaseUrl { get; set; }
+        public required string ApiKey { get; set; }
+
+        public bool IsSonarr => Application.Equals("Sonarr", StringComparison.OrdinalIgnoreCase);
+        public bool IsRadarr => Application.Equals("Radarr", StringComparison.OrdinalIgnoreCase);
     }
 }

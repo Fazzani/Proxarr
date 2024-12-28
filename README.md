@@ -72,7 +72,7 @@ It uses TMDB to find out which streaming services are available in the selected 
 2. On your Radarr/Sonarr instances we have to do some changes
    - tag all indexers by the TAG_NAME defined in your [config.yml][config-yml] (`q` by default)<br/>
      <img src="images/tagging-indexers.png" width="250" alt="tag indexers" />
-   - specify Application URL: is essential because it is used by Proxarr to determine which instance should return the response<br/>
+   - specify Application URL: is essential because it is used by Proxarr to determine to which instance should return the response<br/>
      <img src="images/application_url.png" width="250" alt="Application Url config"/>
    - establish a Webhook connection between Sonarr/Radarr and Proxarr<br/>
      <img src="images/webhook_config.png" width="250" alt="Application Url config"/><br/>
@@ -99,6 +99,7 @@ It uses TMDB to find out which streaming services are available in the selected 
           - "8880:8880"
         environment:
           - LOG_LEVEL=Information
+          - TZ="Europe/Paris"
         volumes:
           - ./:/app/config
           - ./logs:/logs"
@@ -125,7 +126,6 @@ docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/confi
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add Full scan library feature
 - [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Add more tests
 - [ ] Improve logging and error handling

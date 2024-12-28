@@ -19,14 +19,17 @@ Serilog:
     Args:
       path: "%LOG_FOLDER%/log.log"
       rollingInterval: Day
-      outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {CorrelationId} {Level:u3}] {Username} {Message:lj}{NewLine}{Exception}"
+      outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Level:u3}] {Message:lj}{NewLine}{Exception}"
 AllowedHosts: "*"
 AppConfiguration:
   TMDB_API_KEY: {{ TMDB API KEY}}
+  FULL_SCAN_CRON: "0 6 * * 1" # A full scan of Sonarr/Radarr is scheduled every Monday at 6:00 AM
   TAG_NAME: "q" # must be the same as the tag name in indexers
   WATCH_PROVIDERS: "FR:Netflix,US:Amazon Prime Video" # format: REGION:PROVIDER,REGION:PROVIDER
   Clients: # one or more clients
-    - ApiKey: {{ SONARR_OR_RADARR_API_KEY }}
-      BaseUrl: "https://radarr.com"
-    - ApiKey: {{ SONARR_OR_RADARR_API_KEY }}
+    - Application: Radarr # must be Sonarr or Radarr (case insensitive)
+      ApiKey: {{ RADARR_API_KEY }}
+      BaseUrl: "https://radarr.com" # must match the Application Url of Sonarr/Radarr
+    - Application: Sonarr
+      ApiKey: {{ SONARR_API_KEY }}
       BaseUrl: "https://sonarr.com"

@@ -26,10 +26,10 @@ namespace Proxarr.Api.Models
         public string? ReleaseDate { get; set; }
 
         [JsonPropertyName("folderPath")]
-        public required string FolderPath { get; set; }
+        public string? FolderPath { get; set; }
 
         [JsonPropertyName("tmdbId")]
-        public int TmdbId { get; set; }
+        public required int TmdbId { get; set; }
 
         [JsonPropertyName("imdbId")]
         public string? ImdbId { get; set; }

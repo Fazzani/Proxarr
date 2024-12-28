@@ -1,13 +1,12 @@
+using Proxarr.Api.Configuration;
 using Proxarr.Api.Core;
+using Proxarr.Api.HostedServices;
 using Proxarr.Api.Services;
 using Radarr.Http.Client;
 using Scalar.AspNetCore;
 using Serilog;
 using Sonarr.Http.Client;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using TMDbLib.Client;
-using Proxarr.Api.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +59,12 @@ builder.Services
 builder.Services
     .AddHttpClient<SonarrClient>()
     .AddHttpMessageHandler<ApiKeyDelegatingHandler>();
+
+builder.Services.AddCronJob<FullScanHostedService>(c =>
+{
+    c.TimeZoneInfo = TimeZoneInfo.Local;
+    c.CronExpression = Environment.GetEnvironmentVariable("FULL_SCAN_CRON") ?? builder.Configuration.GetValue<string>("AppConfiguration:FULL_SCAN_CRON")!;
+});
 
 var app = builder.Build();
 
