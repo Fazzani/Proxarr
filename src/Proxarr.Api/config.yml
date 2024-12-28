@@ -17,7 +17,7 @@ Serilog:
   - Name: Console
   - Name: File
     Args:
-      path: "%LOG_FOLDER%/Serilog.log"
+      path: "%LOG_FOLDER%/log.log"
       rollingInterval: Day
       outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {CorrelationId} {Level:u3}] {Username} {Message:lj}{NewLine}{Exception}"
 AllowedHosts: "*"

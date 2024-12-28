@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07C8FD5B-2CFB-44CA-A0C8-FC456188447B}"
 	ProjectSection(SolutionItems) = preProject
 		..\.dockerignore = ..\.dockerignore
+		.editorconfig = .editorconfig
 		..\.gitignore = ..\.gitignore
 		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
 		..\docker-compose.yml = ..\docker-compose.yml

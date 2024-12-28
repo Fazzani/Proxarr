@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
+using Proxarr.Api.Configuration;
 using Proxarr.Api.Models;
 using Radarr.Http.Client;
+using System.Globalization;
 using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
@@ -47,7 +49,7 @@ namespace Proxarr.Api.Services
 
                 await UpdateTags(tmdbItem, movieRadarr, cancellationToken).ConfigureAwait(false);
                 await _radarrClient
-                .MoviePUTAsync(false, movieRadarr.Id.ToString(), movieRadarr, cancellationToken)
+                .MoviePUTAsync(false, movieRadarr.Id.ToString(CultureInfo.InvariantCulture), movieRadarr, cancellationToken)
                 .ConfigureAwait(false);
             }
 
@@ -55,8 +57,8 @@ namespace Proxarr.Api.Services
         }
 
         private async Task UpdateTags(TMDbLib.Objects.Movies.Movie tmdbItem,
-                                            MovieResource movieRadarr,
-                                            CancellationToken cancellationToken)
+                                      MovieResource movieRadarr,
+                                      CancellationToken cancellationToken)
         {
             var matched = false;
             var existingTags = await _radarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);

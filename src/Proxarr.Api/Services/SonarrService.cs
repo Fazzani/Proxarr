@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
+using Proxarr.Api.Configuration;
 using Proxarr.Api.Models;
 using Sonarr.Http.Client;
+using System.Globalization;
 using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
@@ -48,7 +50,7 @@ namespace Proxarr.Api.Services
 
                 await UpdateTags(tmdbItem, seriesSonarr, cancellationToken).ConfigureAwait(false);
                 await _sonarrClient
-                .SeriesPUTAsync(false, seriesSonarr.Id.ToString(), seriesSonarr, cancellationToken)
+                .SeriesPUTAsync(false, seriesSonarr.Id.ToString(CultureInfo.InvariantCulture), seriesSonarr, cancellationToken)
                 .ConfigureAwait(false);
             }
 
@@ -56,8 +58,8 @@ namespace Proxarr.Api.Services
         }
 
         private async Task UpdateTags(TMDbLib.Objects.TvShows.TvShow tmdbItem,
-                                            SeriesResource seriesSonarr,
-                                            CancellationToken cancellationToken)
+                                      SeriesResource seriesSonarr,
+                                      CancellationToken cancellationToken)
         {
             var matched = false;
             var existingTags = await _sonarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);

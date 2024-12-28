@@ -1,4 +1,4 @@
-﻿namespace Proxarr.Api
+﻿namespace Proxarr.Api.Configuration
 {
     public sealed class AppConfiguration
     {
@@ -10,7 +10,7 @@
 
         public string TMDB_API_KEY { get; set; }
 
-        Dictionary<string, string[]> _watchProviders;
+        private Dictionary<string, string[]> _watchProviders;
 
         /// <summary>
         /// Watch providers (ex: US:Netflix,US:Amazon Prime Video)
@@ -37,7 +37,7 @@
                 var parts = region.Split(':');
                 if (parts.Length != 2)
                 {
-                    throw new FormatException("WATCH_PROVIDERS must ");
+                    throw new FormatException("Malformed WATCH_PROVIDERS! Must follow this format: REGION:WatchProvider, REGION:WatchProvider, ... ex (US:Netflix,FR:Youtube)");
                 }
                 if (!dict.TryGetValue(parts[0], out string[]? value))
                 {
