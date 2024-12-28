@@ -19,7 +19,7 @@
   </a>
 
   <p align="center">
-    Automatically categorize your requested movies and tv shows from your watching providers.
+    Prevents Sonarr/Radarr from downloading media already available for your region on streaming services (e.g., Netflix, Amazon Prime Video)
     <br />
     <a href="https://github.com/Fazzani/Proxarr/issues/new?labels=bug&template=bug-report.yml">:boom: Report Bug :boom:</a>
     ·
@@ -128,8 +128,10 @@ docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/confi
 
 - [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Add more tests
-- [ ] Improve logging and error handling
+- [ ] Improve logging
 - [ ] Add Api versioning
+- [ ] HealthCheck: change log level to debug
+- [ ] Add security
  
 See the [open issues](https://github.com/Fazzani/Proxarr/issues) for a full list of proposed features (and known issues).
 

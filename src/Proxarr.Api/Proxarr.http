@@ -1,20 +1,16 @@
-@Proxarr.Api_HostAddress = http://localhost:5056
-@Radarr.ApplicationUrl = https://radarr
-@Sonarr.ApplicationUrl = https://sonarr
-
 ### Movie qualify endpoint
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier
+POST {{Proxarr_ApplicationUrl}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
   "movie": {
-    "id": 77,
+    "id": 66,
     "title": "Asterix: The Secret of the Magic Potion",
     "year": 2018,
     "releaseDate": "2019-04-10",
     "folderPath": "/Videos/Videos/movies/Asterix - The Secret of the Magic Potion (2018)",
-    "tmdbId": 527729,
+    "tmdbId": 620371,
     "imdbId": "tt8001346",
     "overview": "Following a fall during mistletoe picking, Druid Getafix decides that it is time to secure the future of the village. Accompanied by Asterix and Obelix, he undertakes to travel the Gallic world in search of a talented young druid to transmit the Secret of the Magic Potion.",
     "genres": [
@@ -46,12 +42,12 @@ Accept: application/json
   "addMethod": "manual",
   "eventType": "MovieAdded",
   "instanceName": "Radarr",
-  "applicationUrl": "https://radarr.synker.ovh"
+  "applicationUrl": "{{Radarr_ApplicationUrl}}"
 }
 
 ### Movie qualify endpoint TEST
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier
+POST {{Proxarr_ApplicationUrl}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
@@ -83,55 +79,50 @@ Accept: application/json
   },
   "eventType": "Test",
   "instanceName": "Radarr",
-  "applicationUrl": "https://radarr.synker.ovh"
+  "applicationUrl": "{{Radarr_ApplicationUrl}}"
 }
 
 ### TV qualify endpoint
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier
+POST {{Proxarr_ApplicationUrl}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
   "series": {
-    "id": 25,
-    "title": "Lost",
-    "titleSlug": "lost",
-    "path": "/Videos/Videos/shows/Lost",
-    "tvdbId": 73739,
-    "tvMazeId": 123,
-    "tmdbId": 4607,
-    "imdbId": "tt0411008",
+    "id": 28,
+    "title": "Landman",
+    "titleSlug": "landman",
+    "path": "/Videos/Videos/shows/Landman",
+    "tvdbId": 397424,
+    "tvMazeId": 53777,
+    "tmdbId": 157741,
+    "imdbId": "tt14186672",
     "type": "standard",
-    "year": 2004,
+    "year": 2024,
     "genres": [
-      "Action",
-      "Adventure",
       "Drama",
-      "Fantasy",
-      "Mystery",
-      "Science Fiction",
-      "Thriller"
+      "Western"
     ],
     "images": [
       {
         "coverType": "banner",
-        "url": "/MediaCover/25/banner.jpg?lastWrite=638707559740506834",
-        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/73739-g4.jpg"
+        "url": "/MediaCover/28/banner.jpg?lastWrite=638710680567467639",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/397424/banners/67209a22b6b74.jpg"
       },
       {
         "coverType": "poster",
-        "url": "/MediaCover/25/poster.jpg?lastWrite=638707559740745300",
-        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/73739-11.jpg"
+        "url": "/MediaCover/28/poster.jpg?lastWrite=638710680567912158",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/397424/posters/672151a55006f.jpg"
       },
       {
         "coverType": "fanart",
-        "url": "/MediaCover/25/fanart.jpg?lastWrite=638707559742200054",
-        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/73739-34.jpg"
+        "url": "/MediaCover/28/fanart.jpg?lastWrite=638710680568336477",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/397424/backgrounds/6720993fce86e.jpg"
       },
       {
         "coverType": "clearlogo",
-        "url": "/MediaCover/25/clearlogo.png?lastWrite=638707559742579613",
-        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/73739/clearlogo/622b30b555156.png"
+        "url": "/MediaCover/28/clearlogo.png?lastWrite=638710680568551225",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/397424/clearlogo/672099f97a3c2.png"
       }
     ],
     "tags": [
@@ -140,12 +131,12 @@ Accept: application/json
   },
   "eventType": "SeriesAdd",
   "instanceName": "Sonarr",
-  "applicationUrl": "{{Sonarr.ApplicationUrl}}"
+  "applicationUrl": "https://sonarr.synker.ovh"
 }
 
 ### TV qualify endpoint TEST
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier
+POST {{Proxarr_ApplicationUrl}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
@@ -174,5 +165,5 @@ Accept: application/json
   ],
   "eventType": "Test",
   "instanceName": "Sonarr",
-  "applicationUrl": "http://sonarr"
+  "applicationUrl": "{{Sonarr_ApplicationUrl}}"
 }

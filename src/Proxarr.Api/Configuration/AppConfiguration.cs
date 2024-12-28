@@ -12,7 +12,7 @@
 
         public string FULL_SCAN_CRON { get; set; } = "0 6 * * 1";
 
-        public List<ClientInstance> Clients { get; set; }
+        public List<ClientConfiguration> Clients { get; set; }
 
         private Dictionary<string, string[]> _watchProviders;
 
@@ -56,18 +56,5 @@
 
             return dict;
         }
-    }
-
-    public sealed class ClientInstance
-    {
-        /// <summary>
-        /// The name of the application (Sonarr or Radarr)
-        /// </summary>
-        public required string Application { get; set; }
-        public required string BaseUrl { get; set; }
-        public required string ApiKey { get; set; }
-
-        public bool IsSonarr => Application.Equals("Sonarr", StringComparison.OrdinalIgnoreCase);
-        public bool IsRadarr => Application.Equals("Radarr", StringComparison.OrdinalIgnoreCase);
     }
 }

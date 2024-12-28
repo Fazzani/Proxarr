@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using Proxarr.Api.Configuration;
@@ -8,8 +9,10 @@ using Radarr.Http.Client;
 using Scalar.AspNetCore;
 using Serilog;
 using Sonarr.Http.Client;
+using System.Diagnostics;
 using System.Net;
 using TMDbLib.Client;
+using TMDbLib.Objects.Exceptions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +48,24 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         new MediaAddedJsonConverter());
 });
 
+// Add healthcheck
 builder.Services.AddHealthChecks();
+
+// Add Exception handling
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance =
+            $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+
+        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+
+        Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+        context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
+    };
+}).AddExceptionHandler<ExceptionToProblemDetailsHandler>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -92,7 +112,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(opt =>
+    {
+        opt.Title = "Proxarr API";
+        opt.Theme = ScalarTheme.Mars;
+    });
 }
 
 app.UseAuthorization();
@@ -100,5 +124,18 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHealthChecks("/health");
+
+app.UseExceptionHandler(new ExceptionHandlerOptions
+{
+    StatusCodeSelector = ex => ex switch
+    {
+        ArgumentException => StatusCodes.Status400BadRequest,
+        NotFoundException => StatusCodes.Status404NotFound,
+        Radarr.Http.Client.ApiException e when (e.StatusCode == StatusCodes.Status404NotFound) => StatusCodes.Status404NotFound,
+        Sonarr.Http.Client.ApiException e when (e.StatusCode == StatusCodes.Status404NotFound) => StatusCodes.Status404NotFound,
+        _ => StatusCodes.Status500InternalServerError
+    },
+    
+});
 
 await app.RunAsync();
