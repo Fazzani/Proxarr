@@ -54,6 +54,7 @@ services:
       - "8880:8880"
     environment:
       - LOG_LEVEL=Information
+      - TZ="Europe/Paris"
     volumes:
       - ./:/app/config
       - ./logs:/logs"
