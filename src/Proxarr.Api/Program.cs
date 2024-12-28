@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Http.Resilience;
+using Polly;
 using Proxarr.Api.Configuration;
 using Proxarr.Api.Core;
 using Proxarr.Api.HostedServices;
@@ -6,6 +8,7 @@ using Radarr.Http.Client;
 using Scalar.AspNetCore;
 using Serilog;
 using Sonarr.Http.Client;
+using System.Net;
 using TMDbLib.Client;
 
 
@@ -52,13 +55,30 @@ builder.Services.AddTransient<ApiKeyDelegatingHandler>();
 builder.Services.AddScoped<IRadarrService, RadarrService>();
 builder.Services.AddScoped<ISonarrService, SonarrService>();
 
+// Add resilience strategy
+HttpStatusCode[] retryStatus = [HttpStatusCode.InternalServerError, HttpStatusCode.ServiceUnavailable, HttpStatusCode.TooManyRequests];
+
+Action<HttpStandardResilienceOptions> resilienceStragtegy = options =>
+{
+    // Customize retry
+    options.Retry.ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+        .Handle<HttpRequestException>()
+        .HandleResult(response => retryStatus.Any(x => x == response.StatusCode));
+    options.Retry.MaxRetryAttempts = 3;
+
+    // Customize attempt timeout
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(5);
+};
+
 builder.Services
     .AddHttpClient<RadarrClient>()
-    .AddHttpMessageHandler<ApiKeyDelegatingHandler>();
+    .AddHttpMessageHandler<ApiKeyDelegatingHandler>()
+    .AddStandardResilienceHandler(resilienceStragtegy);
 
 builder.Services
     .AddHttpClient<SonarrClient>()
-    .AddHttpMessageHandler<ApiKeyDelegatingHandler>();
+    .AddHttpMessageHandler<ApiKeyDelegatingHandler>()
+    .AddStandardResilienceHandler(resilienceStragtegy);
 
 builder.Services.AddCronJob<FullScanHostedService>(c =>
 {

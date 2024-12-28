@@ -32,7 +32,7 @@ namespace Proxarr.Api.Controllers
                 return Ok();
             }
 
-            if(media is MovieAdded movie)
+            if (media is MovieAdded movie)
             {
                 var result = await _radarrService.Qualify(movie, cancellationToken).ConfigureAwait(false);
 

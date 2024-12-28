@@ -23,6 +23,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="NetEscapades.Configuration.Yaml" Version="3.1.0" />
     <PackageReference Include="NSwag.ApiDescription.Client" Version="14.2.0">

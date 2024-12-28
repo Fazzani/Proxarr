@@ -90,7 +90,7 @@ dotnet_diagnostic.CA1304.severity = error
 dotnet_diagnostic.CA1305.severity = error
 [*]
 vsspell_section_id = 25685bb86f6248d2844f68d46e45a9b5
-vsspell_ignored_words_25685bb86f6248d2844f68d46e45a9b5 = cron
+vsspell_ignored_words_25685bb86f6248d2844f68d46e45a9b5 = File:.\IgnoredWords.dic
 
 [[*.gitignore](gitignore)]
 # VSSPELL: gitignore
