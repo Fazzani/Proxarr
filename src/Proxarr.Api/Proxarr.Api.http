@@ -4,7 +4,7 @@
 
 ### Movie qualify endpoint
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier/movie
+POST {{Proxarr.Api_HostAddress}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
@@ -49,7 +49,7 @@ Accept: application/json
 
 ### Movie qualify endpoint TEST
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier/movie
+POST {{Proxarr.Api_HostAddress}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
@@ -86,7 +86,7 @@ Accept: application/json
 
 ### TV qualify endpoint
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier/tv
+POST {{Proxarr.Api_HostAddress}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {
@@ -143,7 +143,7 @@ Accept: application/json
 
 ### TV qualify endpoint TEST
 
-POST {{Proxarr.Api_HostAddress}}/api/qualifier/tv
+POST {{Proxarr.Api_HostAddress}}/api/qualifier
 Content-Type: application/json
 Accept: application/json
 {

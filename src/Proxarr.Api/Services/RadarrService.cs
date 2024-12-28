@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Models;
 using Radarr.Http.Client;
+using System.Globalization;
 using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
@@ -47,7 +48,7 @@ namespace Proxarr.Api.Services
 
                 await UpdateTags(tmdbItem, movieRadarr, cancellationToken).ConfigureAwait(false);
                 await _radarrClient
-                .MoviePUTAsync(false, movieRadarr.Id.ToString(), movieRadarr, cancellationToken)
+                .MoviePUTAsync(false, movieRadarr.Id.ToString(CultureInfo.InvariantCulture), movieRadarr, cancellationToken)
                 .ConfigureAwait(false);
             }
 

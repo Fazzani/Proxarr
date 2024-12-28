@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Models;
 using Sonarr.Http.Client;
+using System.Globalization;
 using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
@@ -48,7 +49,7 @@ namespace Proxarr.Api.Services
 
                 await UpdateTags(tmdbItem, seriesSonarr, cancellationToken).ConfigureAwait(false);
                 await _sonarrClient
-                .SeriesPUTAsync(false, seriesSonarr.Id.ToString(), seriesSonarr, cancellationToken)
+                .SeriesPUTAsync(false, seriesSonarr.Id.ToString(CultureInfo.InvariantCulture), seriesSonarr, cancellationToken)
                 .ConfigureAwait(false);
             }
 

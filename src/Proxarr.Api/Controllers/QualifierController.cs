@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Proxarr.Api.Models;
 using Proxarr.Api.Services;
-using TMDbLib.Objects.Movies;
 
 namespace Proxarr.Api.Controllers
 {
@@ -22,43 +21,41 @@ namespace Proxarr.Api.Controllers
             _sonarrService = sonarrService;
         }
 
-        [HttpPost("movie")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> QualifiedMovie(MovieAdded movie, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Qualified(MediaAdded media, CancellationToken cancellationToken)
         {
-            if (movie.EventType.Equals("test", StringComparison.OrdinalIgnoreCase))
+            if (media.EventType.Equals("test", StringComparison.OrdinalIgnoreCase))
             {
                 return Ok();
             }
 
-            var result = await _radarrService.Qualify(movie, cancellationToken).ConfigureAwait(false);
-
-            if (result == nameof(NotFound))
+            if(media is MovieAdded movie)
             {
-                _logger.LogError("Movie not found in Radarr {Title}", movie.Movie.Title);
-                return NotFound();
-            }
-            return Ok();
-        }
+                var result = await _radarrService.Qualify(movie, cancellationToken).ConfigureAwait(false);
 
-        [HttpPost("tv")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> QualifiedTv(TvAdded tvAdded, CancellationToken cancellationToken)
-        {
-            if (tvAdded.EventType.Equals("test", StringComparison.OrdinalIgnoreCase))
+                if (result == nameof(NotFound))
+                {
+                    _logger.LogError("Movie not found in Radarr {Title}", movie.Movie.Title);
+                    return NotFound();
+                }
+            }
+            else if (media is TvAdded tvAdded)
             {
-                return Ok();
+                var result = await _sonarrService.Qualify(tvAdded, cancellationToken).ConfigureAwait(false);
+                if (result == nameof(NotFound))
+                {
+                    _logger.LogError("Tv not found in Sonarr {Title}", tvAdded.Series.Title);
+                    return NotFound();
+                }
             }
-
-            var result = await _sonarrService.Qualify(tvAdded, cancellationToken).ConfigureAwait(false);
-
-            if (result == nameof(NotFound))
+            else
             {
-                _logger.LogError("Tv not found in Sonarr {Title}", tvAdded.Series.Title);
-                return NotFound();
+                return BadRequest();
             }
+
             return Ok();
         }
     }

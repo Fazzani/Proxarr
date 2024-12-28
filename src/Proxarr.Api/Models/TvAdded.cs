@@ -2,19 +2,10 @@
 
 namespace Proxarr.Api.Models
 {
-    public class TvAdded
+    public class TvAdded : MediaAdded
     {
         [JsonPropertyName("series")]
         public required Series Series { get; set; }
-
-        [JsonPropertyName("eventType")]
-        public required string EventType { get; set; }
-
-        [JsonPropertyName("instanceName")]
-        public required string InstanceName { get; set; }
-
-        [JsonPropertyName("applicationUrl")]
-        public required string ApplicationUrl { get; set; }
     }
 
     public class Series

@@ -74,7 +74,7 @@ It uses TMDB to find out which streaming services are available in the selected 
      <img src="images/application_url.png" width="250" alt="Application Url config"/>
    - establish a Webhook connection between Sonarr/Radarr and Proxarr<br/>
      <img src="images/webhook_config.png" width="250" alt="Application Url config"/><br/>
-     _Note_ : Webhook URL is `http://<Proxarr_Instance>/api/qualifier/tv` for Sonarr and `http://<Proxarr_Instance>/api/qualifier/movie` for Radarr
+     _Note_ : Webhook URL is `http://<Proxarr_Instance>/api/qualifier
 3. Add the following to your docker-compose.yml (to be adapted according to your stack)<br/>
    [docker-compose.yml](docker-compose.yml) is an another full example of how to integrate Proxarr with Sonarr and Radarr.
    ```yaml
@@ -100,8 +100,10 @@ It uses TMDB to find out which streaming services are available in the selected 
         volumes:
           - ./:/app/config
           - ./logs:/logs"
-   ```    
-4. Run    ```shell
+   ```
+    
+4. Run 
+   ```shell
     docker compose -f docker-compose.yml up -d
     ```
 > Standalone docker container example

@@ -2,22 +2,13 @@
 
 namespace Proxarr.Api.Models
 {
-    public class MovieAdded
+    public class MovieAdded : MediaAdded
     {
         [JsonPropertyName("movie")]
         public required Movie Movie { get; set; }
 
         [JsonPropertyName("addMethod")]
         public string? AddMethod { get; set; }
-
-        [JsonPropertyName("eventType")]
-        public required string EventType { get; set; }
-
-        [JsonPropertyName("instanceName")]
-        public required string InstanceName { get; set; }
-
-        [JsonPropertyName("applicationUrl")]
-        public required string ApplicationUrl { get; set; }
     }
 
     public class Movie
@@ -57,26 +48,5 @@ namespace Proxarr.Api.Models
 
         [JsonPropertyName("originalLanguage")]
         public Originallanguage? OriginalLanguage { get; set; }
-    }
-
-    public class Originallanguage
-    {
-        [JsonPropertyName("id")]
-        public int? Id { get; set; }
-
-        [JsonPropertyName("name")]
-        public string? Name { get; set; }
-    }
-
-    public class Image
-    {
-        [JsonPropertyName("coverType")]
-        public string? CoverType { get; set; }
-
-        [JsonPropertyName("url")]
-        public string? Url { get; set; }
-
-        [JsonPropertyName("remoteUrl")]
-        public string? RemoteUrl { get; set; }
     }
 }
