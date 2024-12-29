@@ -89,7 +89,7 @@ Content-Type: application/json
 Accept: application/json
 {
   "series": {
-    "id": 28,
+    "id": 30,
     "title": "Landman",
     "titleSlug": "landman",
     "path": "/Videos/Videos/shows/Landman",

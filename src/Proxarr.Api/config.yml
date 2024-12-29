@@ -3,6 +3,11 @@ Serilog:
   Using:
   - Serilog.Sinks.Console
   - Serilog.Sinks.File
+  - Serilog.Expressions
+  Filter:
+    - Name: ByExcluding
+      Args:
+        expression: "RequestPath like '/health%'"
   MinimumLevel:
     Default: "Information"
     Override:
