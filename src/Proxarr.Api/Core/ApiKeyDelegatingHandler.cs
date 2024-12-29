@@ -21,6 +21,7 @@ namespace Proxarr.Api.Core
             if (!request.Headers.Contains(API_KEY_HEADER_NAME) && request.RequestUri != null)
             {
                 var key = $"{request.RequestUri.Scheme}://{request.RequestUri.Host}";
+                _logger.LogInformation("Trying to find {ApplicationUrl} into declared clients", key);
                 var clientConfig = _configuration.Clients?.FirstOrDefault(x => x.BaseUrl.Equals(key, StringComparison.OrdinalIgnoreCase));
 
                 if (clientConfig != null)

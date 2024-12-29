@@ -119,6 +119,10 @@ docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/confi
 
 ### Watching providers configuration
 
+For the lazy ones, all available regions and providers are available [here](./data).
+
+For the curious ones, you can use the following APIs to get the available regions and providers:
+
 - [TMDB API to get available regions](https://developer.themoviedb.org/reference/watch-providers-available-regions)
 - [TMDB API to get available movie providers by region](https://developer.themoviedb.org/reference/watch-providers-movie-list)
 - [TMDB API to get available tv providers by region](https://developer.themoviedb.org/reference/watch-providers-tv-list)
@@ -126,11 +130,8 @@ docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/confi
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Add more tests
-- [ ] Improve logging
 - [ ] Add Api versioning
-- [ ] HealthCheck: change log level to debug
 - [ ] Add security
  
 See the [open issues](https://github.com/Fazzani/Proxarr/issues) for a full list of proposed features (and known issues).
