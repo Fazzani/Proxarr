@@ -128,9 +128,7 @@ docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/confi
 
 - [ ] Add more providers (JustWatch, Reelgood, etc)
 - [ ] Add more tests
-- [ ] Improve logging
 - [ ] Add Api versioning
-- [ ] HealthCheck: change log level to debug
 - [ ] Add security
  
 See the [open issues](https://github.com/Fazzani/Proxarr/issues) for a full list of proposed features (and known issues).
