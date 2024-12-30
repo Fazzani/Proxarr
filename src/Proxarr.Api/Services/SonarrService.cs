@@ -61,7 +61,7 @@ namespace Proxarr.Api.Services
                 .GetTvShowAsync(tvAdded.Series.TmdbId, TMDbLib.Objects.TvShows.TvShowMethods.WatchProviders, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            if (tmdbItem != null && tmdbItem.WatchProviders.Results?.Count > 0)
+            if (tmdbItem != null)
             {
                 _sonarrClient.BaseUrl = tvAdded.ApplicationUrl;
                 var seriesSonarr = await _sonarrClient.SeriesGETAsync(tvAdded.Series.Id, false, cancellationToken).ConfigureAwait(false);
