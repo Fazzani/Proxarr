@@ -61,7 +61,7 @@ namespace Proxarr.Api.Services
                 .GetMovieAsync(movieAdded.Movie.TmdbId, TMDbLib.Objects.Movies.MovieMethods.WatchProviders, cancellationToken)
                 .ConfigureAwait(false);
 
-            if (tmdbItem != null && tmdbItem.WatchProviders.Results?.Count > 0)
+            if (tmdbItem != null)
             {
                 _radarrClient.BaseUrl = movieAdded.ApplicationUrl;
                 var movieRadarr = await _radarrClient.MovieGET2Async(movieAdded.Movie.Id, cancellationToken).ConfigureAwait(false);
