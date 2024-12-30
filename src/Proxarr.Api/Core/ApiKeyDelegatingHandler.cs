@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Proxarr.Api.Core
 {
+    [ExcludeFromCodeCoverage]
     public class ApiKeyDelegatingHandler : DelegatingHandler
     {
         private const string API_KEY_HEADER_NAME = "X-API-KEY";

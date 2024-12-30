@@ -1,8 +1,10 @@
 ﻿using Proxarr.Api.Core;
 using Proxarr.Api.Services;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Proxarr.Api.HostedServices
 {
+    [ExcludeFromCodeCoverage]
     public class FullScanHostedService : CronJobService
     {
         private IRadarrService _radarrService;

@@ -1,7 +1,9 @@
 ﻿using Cronos;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Proxarr.Api.Core
 {
+    [ExcludeFromCodeCoverage]
     public abstract class CronJobService(string cronExpression, TimeZoneInfo timeZoneInfo, ILogger logger) : IHostedService, IDisposable
     {
         private System.Timers.Timer? _timer;

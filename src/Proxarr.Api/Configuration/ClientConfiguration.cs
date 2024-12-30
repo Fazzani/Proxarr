@@ -1,5 +1,8 @@
-﻿namespace Proxarr.Api.Configuration
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Proxarr.Api.Configuration
 {
+    [ExcludeFromCodeCoverage]
     public sealed class ClientConfiguration
     {
         public const string SECTION_NAME = $"{AppConfiguration.SECTION_NAME}:Clients";

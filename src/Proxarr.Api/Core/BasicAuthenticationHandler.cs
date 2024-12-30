@@ -6,14 +6,17 @@ using System.Text;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Authorization;
 using Proxarr.Api.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Proxarr.Api.Core
 {
+    [ExcludeFromCodeCoverage]
     public class BasicAuthenticationDefaults
     {
         public const string AuthenticationScheme = "Basic";
     }
 
+    [ExcludeFromCodeCoverage]
     public class BasicAuthorizationAttribute : AuthorizeAttribute
     {
         public BasicAuthorizationAttribute()
@@ -22,6 +25,7 @@ namespace Proxarr.Api.Core
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class BasicAuthenticationClient : IIdentity
     {
         public string? AuthenticationType { get; set; }
@@ -31,6 +35,7 @@ namespace Proxarr.Api.Core
         public string? Name { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private readonly AppConfiguration? _appConfig;

@@ -1,21 +1,21 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Configuration;
+using Proxarr.Api.Core;
 using Proxarr.Api.Models;
 using Sonarr.Http.Client;
 using System.Globalization;
-using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
 {
     public class SonarrService : ISonarrService
     {
         private readonly ILogger<SonarrService> _logger;
-        private readonly TMDbClient _tMDbClient;
+        private readonly ITmdbProxy _tMDbClient;
         private readonly AppConfiguration _appConfiguration;
         private readonly SonarrClient _sonarrClient;
 
         public SonarrService(ILogger<SonarrService> logger,
-                             TMDbClient tMDbClient,
+                             ITmdbProxy tMDbClient,
                              IOptions<AppConfiguration> appConfiguration,
                              SonarrClient sonarrClient)
         {
@@ -56,7 +56,6 @@ namespace Proxarr.Api.Services
             ArgumentNullException.ThrowIfNull(tvAdded);
 
             _logger.LogInformation("Qualifying tv {Title}", tvAdded.Series.Title);
-            // TODO: validation
 
             var tmdbItem = await _tMDbClient
                 .GetTvShowAsync(tvAdded.Series.TmdbId, TMDbLib.Objects.TvShows.TvShowMethods.WatchProviders, cancellationToken: cancellationToken)
@@ -77,6 +76,10 @@ namespace Proxarr.Api.Services
                 await _sonarrClient
                 .SeriesPUTAsync(false, seriesSonarr.Id.ToString(CultureInfo.InvariantCulture), seriesSonarr, cancellationToken)
                 .ConfigureAwait(false);
+            }
+            else
+            {
+                return "NotFound";
             }
 
             return string.Empty;
