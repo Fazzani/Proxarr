@@ -4,13 +4,19 @@
     {
         public const string SECTION_NAME = nameof(AppConfiguration);
 
-        public string? LOG_FOLDER { get; set; }
+        [ConfigurationKeyName("LOG_FOLDER")]
+        public string? LogFolder { get; set; }
 
-        public string? TAG_NAME { get; set; }
+        [ConfigurationKeyName("TAG_NAME")]
+        public string? TagName { get; set; }
 
-        public required string TMDB_API_KEY { get; set; }
+        [ConfigurationKeyName("TMDB_API_KEY")]
+        public string? TmdbApiKey { get; set; }
 
-        public string FULL_SCAN_CRON { get; set; } = "0 6 * * 1";
+        [ConfigurationKeyName("FULL_SCAN_CRON")]
+        public string FullScanCron { get; set; } = "0 6 * * 1";
+
+        public BasicAuthenticationConfiguration Authentication { get; set; }
 
         public List<ClientConfiguration> Clients { get; set; }
 
@@ -20,7 +26,7 @@
         /// Transform Watch providers (ex: US:Netflix,US:Amazon Prime Video) to a dictionary
         /// grouped by region
         /// </summary>
-        public Dictionary<string, string[]> WatchProviders
+        public Dictionary<string, string[]> WatchProvidersDict
         {
             get
             {
@@ -29,15 +35,16 @@
             }
         }
 
-        public string WATCH_PROVIDERS { get; set; }
+        [ConfigurationKeyName("WATCH_PROVIDERS")]
+        public string WatchProviders { get; set; }
 
         private Dictionary<string, string[]> InitProviders()
         {
-            ArgumentNullException.ThrowIfNull(WATCH_PROVIDERS);
+            ArgumentNullException.ThrowIfNull(WatchProviders);
 
             var dict = new Dictionary<string, string[]>();
 
-            foreach (var item in WATCH_PROVIDERS!.Split(','))
+            foreach (var item in WatchProviders!.Split(','))
             {
                 var parts = item.Split(':');
                 if (parts.Length != 2)

@@ -88,7 +88,7 @@ namespace Proxarr.Api.Services
             var matched = false;
             var existedTags = await _radarrClient.TagAllAsync(cancellationToken).ConfigureAwait(false);
 
-            foreach (var provider in _appConfiguration.WatchProviders)
+            foreach (var provider in _appConfiguration.WatchProvidersDict)
             {
                 if (tmdbItem.WatchProviders.Results.TryGetValue(provider.Key, out var matchedProvider))
                 {
@@ -116,7 +116,7 @@ namespace Proxarr.Api.Services
 
             if (!matched)
             {
-                await AddTag(movieRadarr, matched, existedTags, _appConfiguration.TAG_NAME!, cancellationToken).ConfigureAwait(false);
+                await AddTag(movieRadarr, matched, existedTags, _appConfiguration.TagName!, cancellationToken).ConfigureAwait(false);
             }
         }
 
