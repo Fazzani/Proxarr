@@ -38,3 +38,6 @@ AppConfiguration:
     - Application: Sonarr
       ApiKey: {{ SONARR_API_KEY }}
       BaseUrl: "https://sonarr.com"
+  # Authentication: # uncomment to enable basic authentication
+   # Username: admin
+   # Password: admin

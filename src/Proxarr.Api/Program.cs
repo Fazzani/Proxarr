@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using Proxarr.Api.Configuration;
@@ -30,6 +32,8 @@ builder.Configuration
     .AddEnvironmentVariables()
     .AddYamlFile(Path.Combine(configDirPath, configFileName), optional: false, reloadOnChange: true);
 
+builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(AppConfiguration.SECTION_NAME));
+
 // Add log configuration
 
 var logger = new LoggerConfiguration()
@@ -48,7 +52,20 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         new MediaAddedJsonConverter());
 });
 
+// Add basic authentication
+var appConfig = new AppConfiguration();
+builder.Configuration.GetRequiredSection(AppConfiguration.SECTION_NAME).Bind(appConfig);
+
+if (!string.IsNullOrEmpty(appConfig?.Authentication?.Password) || !string.IsNullOrEmpty(appConfig?.Authentication?.Username))
+{
+    builder.Services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
+        .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+        });
+}
+
 // Add healthcheck
+
 builder.Services.AddHealthChecks();
 
 // Add Exception handling
@@ -69,8 +86,7 @@ builder.Services.AddProblemDetails(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton(x => new TMDbClient(builder.Configuration.GetValue<string>("AppConfiguration:TMDB_API_KEY")));
-builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(AppConfiguration.SECTION_NAME));
+builder.Services.AddSingleton(x => new TMDbClient(appConfig?.TmdbApiKey));
 builder.Services.AddTransient<ApiKeyDelegatingHandler>();
 builder.Services.AddScoped<IRadarrService, RadarrService>();
 builder.Services.AddScoped<ISonarrService, SonarrService>();
@@ -103,7 +119,7 @@ builder.Services
 builder.Services.AddCronJob<FullScanHostedService>(c =>
 {
     c.TimeZoneInfo = TimeZoneInfo.Local;
-    c.CronExpression = Environment.GetEnvironmentVariable("FULL_SCAN_CRON") ?? builder.Configuration.GetValue<string>("AppConfiguration:FULL_SCAN_CRON")!;
+    c.CronExpression = Environment.GetEnvironmentVariable("FULL_SCAN_CRON") ?? appConfig?.FullScanCron!;
 });
 
 var app = builder.Build();
@@ -135,7 +151,7 @@ app.UseExceptionHandler(new ExceptionHandlerOptions
         Sonarr.Http.Client.ApiException e when (e.StatusCode == StatusCodes.Status404NotFound) => StatusCodes.Status404NotFound,
         _ => StatusCodes.Status500InternalServerError
     },
-    
+
 });
 
 await app.RunAsync();

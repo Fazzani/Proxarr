@@ -2,6 +2,7 @@
 
 POST {{Proxarr_ApplicationUrl}}/api/qualifier
 Content-Type: application/json
+Authorization: basic YWRtaW46YWRtaW4= # admin:admin
 Accept: application/json
 {
   "movie": {
