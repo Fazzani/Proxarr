@@ -1,4 +1,5 @@
 ﻿using Proxarr.Api.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Proxarr.Api.Services
 {
@@ -9,6 +10,7 @@ namespace Proxarr.Api.Services
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [ExcludeFromCodeCoverage]
         Task FullScan(CancellationToken cancellationToken);
 
         /// <summary>

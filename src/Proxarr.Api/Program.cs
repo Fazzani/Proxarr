@@ -88,6 +88,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton(x => new TMDbClient(appConfig?.TmdbApiKey));
 builder.Services.AddTransient<ApiKeyDelegatingHandler>();
+builder.Services.AddScoped<ITmdbProxy, TmdbProxy>();
 builder.Services.AddScoped<IRadarrService, RadarrService>();
 builder.Services.AddScoped<ISonarrService, SonarrService>();
 

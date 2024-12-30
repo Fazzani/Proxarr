@@ -1,5 +1,8 @@
-﻿namespace Proxarr.Api.Core
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Proxarr.Api.Core
 {
+    [ExcludeFromCodeCoverage]
     public class ExceptionToProblemDetailsHandler : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
     {
         private readonly IProblemDetailsService _problemDetailsService;

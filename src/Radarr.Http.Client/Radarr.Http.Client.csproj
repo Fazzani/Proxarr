@@ -5,7 +5,9 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+	</ItemGroup>
 	<ItemGroup>
 		<OpenApiReference Include="OpenAPIs\openapi.json" CodeGenerator="NSwagCSharp" ClassName="RadarrClient">
 			<SourceUri>https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json</SourceUri>

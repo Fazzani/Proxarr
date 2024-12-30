@@ -1,21 +1,21 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Configuration;
+using Proxarr.Api.Core;
 using Proxarr.Api.Models;
 using Radarr.Http.Client;
 using System.Globalization;
-using TMDbLib.Client;
 
 namespace Proxarr.Api.Services
 {
     public class RadarrService : IRadarrService
     {
         private readonly ILogger<RadarrService> _logger;
-        private readonly TMDbClient _tMDbClient;
+        private readonly ITmdbProxy _tMDbClient;
         private readonly AppConfiguration _appConfiguration;
         private readonly RadarrClient _radarrClient;
 
         public RadarrService(ILogger<RadarrService> logger,
-                             TMDbClient tMDbClient,
+                             ITmdbProxy tMDbClient,
                              IOptions<AppConfiguration> appConfiguration,
                              RadarrClient radarrClient)
         {
@@ -76,6 +76,10 @@ namespace Proxarr.Api.Services
                 await _radarrClient
                 .MoviePUTAsync(false, movieRadarr.Id.ToString(CultureInfo.InvariantCulture), movieRadarr, cancellationToken)
                 .ConfigureAwait(false);
+            }
+            else
+            {
+                return "NotFound";
             }
 
             return string.Empty;

@@ -1,5 +1,8 @@
-﻿namespace Proxarr.Api.Configuration
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Proxarr.Api.Configuration
 {
+    [ExcludeFromCodeCoverage]
     public sealed class AppConfiguration
     {
         public const string SECTION_NAME = nameof(AppConfiguration);
@@ -53,11 +56,11 @@
                 }
                 if (!dict.TryGetValue(parts[0], out string[]? value))
                 {
-                    dict.Add(parts[0], [parts[1]]);
+                    dict.Add(parts[0].Trim(), [parts[1].Trim()]);
                 }
                 else
                 {
-                    dict[parts[0]] = [.. value, parts[1]];
+                    dict[parts[0]] = [.. value, parts[1].Trim()];
                 }
             }
 

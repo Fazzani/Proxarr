@@ -130,7 +130,6 @@ For the curious ones, you can use the following APIs to get the available region
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add more tests
 - [ ] Add Api versioning
  
 See the [open issues](https://github.com/Fazzani/Proxarr/issues) for a full list of proposed features (and known issues).
