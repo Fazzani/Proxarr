@@ -6,38 +6,38 @@ Authorization: basic YWRtaW46YWRtaW4= # admin:admin
 Accept: application/json
 {
   "movie": {
-    "id": 66,
-    "title": "Asterix: The Secret of the Magic Potion",
-    "year": 2018,
-    "releaseDate": "2019-04-10",
-    "folderPath": "/Videos/Videos/movies/Asterix - The Secret of the Magic Potion (2018)",
-    "tmdbId": 620371,
-    "imdbId": "tt8001346",
-    "overview": "Following a fall during mistletoe picking, Druid Getafix decides that it is time to secure the future of the village. Accompanied by Asterix and Obelix, he undertakes to travel the Gallic world in search of a talented young druid to transmit the Secret of the Magic Potion.",
+    "id": 88,
+    "title": "Moana 2",
+    "year": 2024,
+    "releaseDate": "2025-02-19",
+    "folderPath": "/Videos/Videos/movies/Moana 2 (2024)",
+    "tmdbId": 1241982,
+    "imdbId": "tt13622970",
+    "overview": "After receiving an unexpected call from her wayfinding ancestors, Moana journeys alongside Maui and a new crew to the far seas of Oceania and into dangerous, long-lost waters for an adventure unlike anything she's ever faced.",
     "genres": [
-      "Family",
       "Animation",
-      "Comedy",
-      "Adventure"
+      "Adventure",
+      "Family",
+      "Comedy"
     ],
     "images": [
       {
         "coverType": "poster",
-        "url": "/MediaCover/77/poster.jpg",
-        "remoteUrl": "https://image.tmdb.org/t/p/original/5OvHpzWXBzOvgZwOoUsqNSouSwy.jpg"
+        "url": "/MediaCover/88/poster.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/m0SbwFNCa9epW1X60deLqTHiP7x.jpg"
       },
       {
         "coverType": "fanart",
-        "url": "/MediaCover/77/fanart.jpg",
-        "remoteUrl": "https://image.tmdb.org/t/p/original/9cPMIuB2tv4IP0LbeNhrK5OyDy5.jpg"
+        "url": "/MediaCover/88/fanart.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg"
       }
     ],
     "tags": [
       "1 - heni"
     ],
     "originalLanguage": {
-      "id": 2,
-      "name": "French"
+      "id": 1,
+      "name": "English"
     }
   },
   "addMethod": "manual",

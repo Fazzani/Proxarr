@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Configuration;
 using Proxarr.Api.Core;
+using Proxarr.Api.Core.Extensions;
 using Proxarr.Api.Models;
 using Sonarr.Http.Client;
 using System.Globalization;
@@ -61,7 +62,7 @@ namespace Proxarr.Api.Services
                 .GetTvShowAsync(tvAdded.Series.TmdbId, TMDbLib.Objects.TvShows.TvShowMethods.WatchProviders, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            if (tmdbItem != null && tmdbItem.WatchProviders.Results?.Count > 0)
+            if (tmdbItem != null)
             {
                 _sonarrClient.BaseUrl = tvAdded.ApplicationUrl;
                 var seriesSonarr = await _sonarrClient.SeriesGETAsync(tvAdded.Series.Id, false, cancellationToken).ConfigureAwait(false);
@@ -98,13 +99,11 @@ namespace Proxarr.Api.Services
                 {
                     foreach (var pr in provider.Value)
                     {
-                        var providerTag = pr.Replace(" ", "_");
-
                         if (matchedProvider.Free?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true ||
                             matchedProvider.FlatRate?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
                             _logger.LogInformation("Matched Free/FlatRate provider {WatchProvider} for {Title}", pr, seriesSonarr.Title);
-                            matched |= await AddTag(seriesSonarr, matched, existedTags, providerTag, cancellationToken).ConfigureAwait(false);
+                            matched |= await AddTag(seriesSonarr, matched, existedTags, pr, cancellationToken).ConfigureAwait(false);
                         }
                         if (matchedProvider.Buy?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
@@ -130,14 +129,12 @@ namespace Proxarr.Api.Services
                                         string providerTag,
                                         CancellationToken cancellationToken)
         {
-            providerTag = providerTag.Replace(" ", "_");
-
             var tag = existingTags.FirstOrDefault(x => x.Label.Equals(providerTag, StringComparison.OrdinalIgnoreCase));
 
             if (tag is null)
             {
                 tag = new TagResource { Label = providerTag };
-                tag = await _sonarrClient.TagPOSTAsync(tag, cancellationToken).ConfigureAwait(false);
+                tag = await _sonarrClient.TagPOSTAsync(tag.Slugify(), cancellationToken).ConfigureAwait(false);
             }
 
             if (!seriesSonarr.Tags.Contains(tag.Id))

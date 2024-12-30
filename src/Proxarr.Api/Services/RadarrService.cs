@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Proxarr.Api.Configuration;
 using Proxarr.Api.Core;
+using Proxarr.Api.Core.Extensions;
 using Proxarr.Api.Models;
 using Radarr.Http.Client;
 using System.Globalization;
@@ -61,7 +62,7 @@ namespace Proxarr.Api.Services
                 .GetMovieAsync(movieAdded.Movie.TmdbId, TMDbLib.Objects.Movies.MovieMethods.WatchProviders, cancellationToken)
                 .ConfigureAwait(false);
 
-            if (tmdbItem != null && tmdbItem.WatchProviders.Results?.Count > 0)
+            if (tmdbItem != null)
             {
                 _radarrClient.BaseUrl = movieAdded.ApplicationUrl;
                 var movieRadarr = await _radarrClient.MovieGET2Async(movieAdded.Movie.Id, cancellationToken).ConfigureAwait(false);
@@ -98,13 +99,11 @@ namespace Proxarr.Api.Services
                 {
                     foreach (var pr in provider.Value)
                     {
-                        var providerTag = pr.Replace(" ", "_");
-
                         if (matchedProvider.Free?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true ||
                             matchedProvider.FlatRate?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
                             _logger.LogInformation("Matched Free/FlatRate provider {WatchProvider} for {Title}", pr, movieRadarr.Title);
-                            matched |= await AddTag(movieRadarr, matched, existedTags, providerTag, cancellationToken).ConfigureAwait(false);
+                            matched |= await AddTag(movieRadarr, matched, existedTags, pr, cancellationToken).ConfigureAwait(false);
                         }
                         if (matchedProvider.Buy?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
                         {
@@ -130,14 +129,12 @@ namespace Proxarr.Api.Services
                                         string providerTag,
                                         CancellationToken cancellationToken)
         {
-            providerTag = providerTag.Replace(" ", "_");
-
             var tag = existingTags.FirstOrDefault(x => x.Label.Equals(providerTag, StringComparison.OrdinalIgnoreCase));
 
             if (tag is null)
             {
                 tag = new TagResource { Label = providerTag };
-                tag = await _radarrClient.TagPOSTAsync(tag, cancellationToken).ConfigureAwait(false);
+                tag = await _radarrClient.TagPOSTAsync(tag.Slugify(), cancellationToken).ConfigureAwait(false);
             }
 
             if (!movieRadarr.Tags.Contains(tag.Id))

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Proxarr.Api.Configuration;
 using Proxarr.Api.Core;
+using Proxarr.Api.Core.Extensions;
 using Proxarr.Api.Models;
 using Proxarr.Api.Services;
 using Radarr.Http.Client;
@@ -19,6 +20,7 @@ namespace Proxarr.Api.Tests
         private readonly Mock<IOptions<AppConfiguration>> _appConfigMock;
         private readonly Mock<RadarrClient> _radarrClientMock;
         private readonly RadarrService _radarrService;
+        private readonly TagResource _qualifyTag;
 
         public RadarrServiceTests()
         {
@@ -36,6 +38,7 @@ namespace Proxarr.Api.Tests
             _appConfigMock.Setup(x => x.Value).Returns(appConfig);
 
             _radarrService = new RadarrService(_loggerMock.Object, _tmdbClientMock.Object, _appConfigMock.Object, _radarrClientMock.Object);
+            _qualifyTag = new TagResource { Id = 30, Label = _appConfigMock.Object.Value.TagName };
         }
 
         [Fact]
@@ -70,8 +73,8 @@ namespace Proxarr.Api.Tests
             var tvAdded = new MovieAdded
             {
                 ApplicationUrl = "http://localhost",
-                EventType = "FULL_SCAN",
-                Movie = new Models.Movie { Id = 1, TmdbId = 123, Title = "Test Movie" },
+                EventType = "MovieAdded",
+                Movie = new Movie { Id = 1, TmdbId = 123, Title = "Test Movie" },
             };
             var cancellationToken = new CancellationToken();
 
@@ -103,6 +106,99 @@ namespace Proxarr.Api.Tests
             // Assert
             _radarrClientMock.Verify(x => x.MoviePUTAsync(false, "1", seriesResource, cancellationToken), Times.Once);
             Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task Qualify_Should_NotBeTagged_When_MatchedWatchProvider()
+        {
+            // Arrange
+            var tvAdded = new MovieAdded
+            {
+                ApplicationUrl = "http://localhost",
+                EventType = "MovieAdded",
+                Movie = new Movie { Id = 1, TmdbId = 123, Title = "Test Movie" },
+            };
+            var cancellationToken = new CancellationToken();
+
+            var watchProviders = new SingleResultContainer<Dictionary<string, WatchProviders>>
+            {
+                Results = new Dictionary<string, WatchProviders>
+                {
+                    { "US", new WatchProviders { Free = [new WatchProviderItem { ProviderName = "Netflix" }] } }
+                }
+            };
+
+            var movieResource = new MovieResource { Id = 1, Title = "Test Series", Tags = [] };
+
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+                .ReturnsAsync(new TMDbLib.Objects.Movies.Movie { WatchProviders = watchProviders });
+
+            _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
+                .ReturnsAsync(movieResource);
+
+            _radarrClientMock.Setup(x => x.TagAllAsync(cancellationToken))
+                .ReturnsAsync([_qualifyTag]);
+
+            var tagResource = new TagResource { Id = 1, Label = "Netflix" };
+
+            _radarrClientMock.Setup(x => x.TagPOSTAsync(It.IsAny<TagResource>(), cancellationToken))
+                .ReturnsAsync(tagResource);
+
+            // Act
+            var result = await _radarrService.Qualify(tvAdded, cancellationToken);
+
+            // Assert
+            _radarrClientMock.Verify(x => x.MoviePUTAsync(false, "1", movieResource, cancellationToken), Times.Once);
+            Assert.Empty(result);
+            _radarrClientMock.Verify(x => x.TagPOSTAsync(It.Is<TagResource>(x => x.Label == tagResource.Slugify()!.Label), cancellationToken), Times.Once);
+            Assert.Single(movieResource.Tags);
+            Assert.True(movieResource.Tags.All(x => x != _qualifyTag.Id));
+        }
+
+        [Fact]
+        public async Task Qualify_Should_BeTagged_When_MatchedWatchProvider()
+        {
+            // Arrange
+            var tvAdded = new MovieAdded
+            {
+                ApplicationUrl = "http://localhost",
+                EventType = "MovieAdded",
+                Movie = new Movie { Id = 1, TmdbId = 123, Title = "Test Movie" },
+            };
+            var cancellationToken = new CancellationToken();
+
+            var watchProviders = new SingleResultContainer<Dictionary<string, WatchProviders>>
+            {
+                Results = new Dictionary<string, WatchProviders>
+                {
+                    { "FR", new WatchProviders { Free = [new WatchProviderItem { ProviderName = "Netflix" }] } }
+                }
+            };
+
+            var movieResource = new MovieResource { Id = 1, Title = "Test Series", Tags = [] };
+
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+                .ReturnsAsync(new TMDbLib.Objects.Movies.Movie { WatchProviders = watchProviders });
+
+            _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
+                .ReturnsAsync(movieResource);
+
+            _radarrClientMock.Setup(x => x.TagAllAsync(cancellationToken))
+                .ReturnsAsync([_qualifyTag]);
+
+            var tagResource = new TagResource { Id = 1, Label = "Netflix" };
+
+            _radarrClientMock.Setup(x => x.TagPOSTAsync(It.IsAny<TagResource>(), cancellationToken))
+                .ReturnsAsync(tagResource);
+
+            // Act
+            var result = await _radarrService.Qualify(tvAdded, cancellationToken);
+
+            // Assert
+            _radarrClientMock.Verify(x => x.MoviePUTAsync(false, "1", movieResource, cancellationToken), Times.Once);
+            Assert.Empty(result);
+            Assert.Single(movieResource.Tags);
+            Assert.Contains(movieResource.Tags, x => x == _qualifyTag.Id);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Proxarr.Api.Configuration
         public string? LogFolder { get; set; }
 
         [ConfigurationKeyName("TAG_NAME")]
-        public string? TagName { get; set; }
+        public string? TagName { get; set; } = "q";
 
         [ConfigurationKeyName("TMDB_API_KEY")]
         public string? TmdbApiKey { get; set; }
