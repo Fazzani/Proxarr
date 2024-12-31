@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Proxarr.Api.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Proxarr.Api.Core
+namespace Proxarr.Api.Core.Http
 {
     [ExcludeFromCodeCoverage]
     public class BasicAuthenticationDefaults
@@ -40,7 +40,7 @@ namespace Proxarr.Api.Core
     {
         private readonly AppConfiguration? _appConfig;
 
-        public BasicAuthenticationHandler(IOptions<AppConfiguration> appConfig, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder) 
+        public BasicAuthenticationHandler(IOptions<AppConfiguration> appConfig, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder)
             : base(options, logger, encoder)
         {
             _appConfig = appConfig?.Value;

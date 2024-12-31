@@ -4,6 +4,7 @@ using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using Proxarr.Api.Configuration;
 using Proxarr.Api.Core;
+using Proxarr.Api.Core.Http;
 using Proxarr.Api.HostedServices;
 using Proxarr.Api.Services;
 using Radarr.Http.Client;
@@ -13,10 +14,11 @@ using Sonarr.Http.Client;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Reflection;
 using TMDbLib.Client;
 using TMDbLib.Objects.Exceptions;
 
-
+var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 var builder = WebApplication.CreateBuilder(args);
 
 var configFileName = "config.yml";
@@ -48,20 +50,17 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.Converters.Add(
-        new MediaAddedJsonConverter());
+    options.JsonSerializerOptions.Converters.Add(new MediaAddedJsonConverter());
 });
 
 // Add basic authentication
 var appConfig = new AppConfiguration();
 builder.Configuration.GetRequiredSection(AppConfiguration.SECTION_NAME).Bind(appConfig);
 
-if (!string.IsNullOrEmpty(appConfig?.Authentication?.Password) || !string.IsNullOrEmpty(appConfig?.Authentication?.Username))
+if (!string.IsNullOrEmpty(appConfig?.Authentication?.Password) && !string.IsNullOrEmpty(appConfig?.Authentication?.Username))
 {
     builder.Services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
-        .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, options =>
-        {
-        });
+        .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, default);
 }
 
 // Add healthcheck
@@ -84,7 +83,21 @@ builder.Services.AddProblemDetails(options =>
 }).AddExceptionHandler<ExceptionToProblemDetailsHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options
+    .AddDocumentTransformer<BasicSecuritySchemeTransformer>()
+    .AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info = new()
+        {
+            Title = "Proxarr Api",
+            Version = "v1",
+            Description = $"Proxarr Api v{assemblyVersion}"
+        };
+        return Task.CompletedTask;
+    });
+});
 
 builder.Services.AddSingleton(x => new TMDbClient(appConfig?.TmdbApiKey));
 builder.Services.AddTransient<ApiKeyDelegatingHandler>();
@@ -131,8 +144,20 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(opt =>
     {
-        opt.Title = "Proxarr API";
-        opt.Theme = ScalarTheme.Mars;
+        opt
+        .WithTitle("Proxarr Api")
+        .WithTheme(ScalarTheme.Mars);
+
+        if (!string.IsNullOrEmpty(appConfig?.Authentication?.Password) && !string.IsNullOrEmpty(appConfig?.Authentication?.Username))
+        {
+            opt
+            .WithPreferredScheme(BasicAuthenticationDefaults.AuthenticationScheme)
+            .WithHttpBasicAuthentication(basic =>
+            {
+                basic.Username = appConfig.Authentication.Username;
+                basic.Password = appConfig.Authentication.Password;
+            });
+        }
     });
 }
 
@@ -152,10 +177,11 @@ app.UseExceptionHandler(new ExceptionHandlerOptions
         Sonarr.Http.Client.ApiException e when (e.StatusCode == StatusCodes.Status404NotFound) => StatusCodes.Status404NotFound,
         _ => StatusCodes.Status500InternalServerError
     },
-
 });
 
 await app.RunAsync();
 
 [ExcludeFromCodeCoverage]
+#pragma warning disable S1118 // Utility classes should not have public constructors
 public partial class Program { }
+#pragma warning restore S1118 // Utility classes should not have public constructors
