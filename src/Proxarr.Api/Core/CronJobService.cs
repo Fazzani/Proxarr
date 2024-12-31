@@ -106,6 +106,7 @@ namespace Proxarr.Api.Core
         TimeZoneInfo TimeZoneInfo { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ScheduleConfig<T> : IScheduleConfig<T>
     {
         public string CronExpression { get; set; } = string.Empty;

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using Proxarr.Api.Configuration;
@@ -12,6 +11,7 @@ using Scalar.AspNetCore;
 using Serilog;
 using Sonarr.Http.Client;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using TMDbLib.Client;
 using TMDbLib.Objects.Exceptions;
@@ -156,3 +156,6 @@ app.UseExceptionHandler(new ExceptionHandlerOptions
 });
 
 await app.RunAsync();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

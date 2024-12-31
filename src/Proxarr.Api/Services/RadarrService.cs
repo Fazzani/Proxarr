@@ -4,6 +4,7 @@ using Proxarr.Api.Core;
 using Proxarr.Api.Core.Extensions;
 using Proxarr.Api.Models;
 using Radarr.Http.Client;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Proxarr.Api.Services
@@ -27,6 +28,7 @@ namespace Proxarr.Api.Services
         }
 
         //<inheritdoc/>
+        [ExcludeFromCodeCoverage(Justification ="Is tested with Qualify function")]
         public async Task FullScan(CancellationToken cancellationToken)
         {
             foreach (var client in _appConfiguration.Clients.Where(x => x.IsRadarr))
@@ -95,7 +97,7 @@ namespace Proxarr.Api.Services
 
             foreach (var provider in _appConfiguration.WatchProvidersDict)
             {
-                if (tmdbItem.WatchProviders.Results.TryGetValue(provider.Key, out var matchedProvider))
+                if (tmdbItem.WatchProviders?.Results.TryGetValue(provider.Key, out var matchedProvider) == true)
                 {
                     foreach (var pr in provider.Value)
                     {
@@ -104,14 +106,6 @@ namespace Proxarr.Api.Services
                         {
                             _logger.LogInformation("Matched Free/FlatRate provider {WatchProvider} for {Title}", pr, movieRadarr.Title);
                             matched |= await AddTag(movieRadarr, matched, existedTags, pr, cancellationToken).ConfigureAwait(false);
-                        }
-                        if (matchedProvider.Buy?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
-                        {
-                            _logger.LogInformation("Found buy provider {WatchProvider} for {Title}", pr, movieRadarr.Title);
-                        }
-                        if (matchedProvider.Rent?.Any(x => x.ProviderName.Equals(pr, StringComparison.OrdinalIgnoreCase)) == true)
-                        {
-                            _logger.LogInformation("Found rent provider {WatchProvider} for {Title}", pr, movieRadarr.Title);
                         }
                     }
                 }

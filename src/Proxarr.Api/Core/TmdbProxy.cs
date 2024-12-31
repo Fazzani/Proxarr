@@ -1,4 +1,5 @@
-﻿using TMDbLib.Client;
+﻿using System.Diagnostics.CodeAnalysis;
+using TMDbLib.Client;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.TvShows;
 
@@ -10,13 +11,14 @@ namespace Proxarr.Api.Core
         Task<TvShow> GetTvShowAsync(int id, TvShowMethods extraMethods = TvShowMethods.Undefined, string language = null, string includeImageLanguage = null, CancellationToken cancellationToken = default);
     }
 
+    [ExcludeFromCodeCoverage]
     public class TmdbProxy : ITmdbProxy
     {
         private readonly TMDbClient _tMDbClient;
 
         public TmdbProxy(TMDbClient tMDbClient)
         {
-
+            ArgumentNullException.ThrowIfNull(tMDbClient);
             _tMDbClient = tMDbClient;
         }
 

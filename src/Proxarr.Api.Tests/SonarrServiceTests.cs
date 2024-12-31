@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Proxarr.Api.Configuration;
@@ -31,7 +32,7 @@ namespace Proxarr.Api.Tests
             var appConfig = new AppConfiguration
             {
                 Clients = [new ClientConfiguration { Application = "Sonarr", BaseUrl = "http://localhost", ApiKey = "fake_api_key" }],
-                WatchProviders = "US:Netflix, FR: Amazon Prime Video",
+                WatchProviders = "US:Netflix, FR: Amazon Prime Video, US:Netflix with ads",
             };
 
             _appConfigMock.Setup(x => x.Value).Returns(appConfig);
@@ -41,7 +42,14 @@ namespace Proxarr.Api.Tests
         }
 
         [Fact]
-        public async Task Qualify_ShouldReturnNotFound_WhenSeriesNotFound()
+        public async Task Ctor_ShouldThrowArgNullEx_WhenAppConfigurationNull()
+        {
+            Action act = () => new SonarrService(null, null, null, null);
+            act.Should().Throw<ArgumentNullException>().WithParameterName("appConfiguration");
+        }
+
+        [Fact]
+        public async Task Qualify_ShouldReturnNotFound_WhenSeriesNotFoundIntoSonarr()
         {
             // Arrange
             var tvAdded = new TvAdded
@@ -54,6 +62,31 @@ namespace Proxarr.Api.Tests
 
             _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
                 .ReturnsAsync(new TvShow { WatchProviders = new SingleResultContainer<Dictionary<string, WatchProviders>> { Results = [] } });
+
+            _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
+                .ReturnsAsync((SeriesResource)null);
+
+            // Act
+            var result = await _sonarrService.Qualify(tvAdded, cancellationToken);
+
+            // Assert
+            Assert.Equal("NotFound", result);
+        }
+
+        [Fact]
+        public async Task Qualify_ShouldReturnNotFound_WhenSeriesNotFoundIntoTMDB()
+        {
+            // Arrange
+            var tvAdded = new TvAdded
+            {
+                ApplicationUrl = "http://localhost",
+                EventType = "FULL_SCAN",
+                Series = new Series { Id = 1, TmdbId = 123, Title = "Test Series" }
+            };
+            var cancellationToken = new CancellationToken();
+
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+                .ReturnsAsync((TvShow)null);
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
                 .ReturnsAsync((SeriesResource)null);
@@ -81,7 +114,7 @@ namespace Proxarr.Api.Tests
             {
                 Results = new Dictionary<string, WatchProviders>
                 {
-                    { "US", new WatchProviders { Free = [new WatchProviderItem { ProviderName = "Netflix" }] } }
+                    { "US", new WatchProviders { Free = [new WatchProviderItem { ProviderName = "Netflix" }], FlatRate = [new WatchProviderItem { ProviderName = "Netflix with Ads" }]  } }
                 }
             };
 
@@ -123,7 +156,7 @@ namespace Proxarr.Api.Tests
             {
                 Results = new Dictionary<string, WatchProviders>
                 {
-                    { "US", new WatchProviders { Free = [new WatchProviderItem { ProviderName = "Netflix" }] } }
+                    { "US", new WatchProviders { Free = [new WatchProviderItem { ProviderName = "Netflix" }], FlatRate = [new WatchProviderItem { ProviderName = "Netflix with Ads" }]  } }
                 }
             };
 
@@ -177,6 +210,42 @@ namespace Proxarr.Api.Tests
 
             _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
                .ReturnsAsync(new TvShow { WatchProviders = watchProviders });
+
+            _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
+                .ReturnsAsync(seriesResource);
+
+            _sonarrClientMock.Setup(x => x.TagAllAsync(cancellationToken))
+                .ReturnsAsync([_qualifyTag]);
+
+            _sonarrClientMock.Setup(x => x.TagPOSTAsync(It.IsAny<TagResource>(), cancellationToken))
+                .ReturnsAsync(new TagResource { Id = 1, Label = "Netflix" });
+
+            // Act
+            var result = await _sonarrService.Qualify(tvAdded, cancellationToken);
+
+            // Assert
+            _sonarrClientMock.Verify(x => x.SeriesPUTAsync(false, "1", seriesResource, cancellationToken), Times.Once);
+            Assert.Empty(result);
+            Assert.Single(seriesResource.Tags);
+            Assert.Contains(seriesResource.Tags, x => x == _qualifyTag.Id);
+        }
+
+        [Fact]
+        public async Task Qualify_Should_BeTagged_When_NoWatchProvider()
+        {
+            // Arrange
+            var tvAdded = new TvAdded
+            {
+                ApplicationUrl = "http://localhost",
+                EventType = "SerieAdd",
+                Series = new Series { Id = 1, TmdbId = 123, Title = "Test Series" },
+            };
+            var cancellationToken = new CancellationToken();
+
+            var seriesResource = new SeriesResource { Id = 1, Title = "Test Series", Tags = [] };
+
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+               .ReturnsAsync(new TvShow ());
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
                 .ReturnsAsync(seriesResource);

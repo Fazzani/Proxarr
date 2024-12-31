@@ -1,13 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Proxarr.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class TvAdded : MediaAdded
     {
         [JsonPropertyName("series")]
         public required Series Series { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class Series
     {
         [JsonPropertyName("id")]
