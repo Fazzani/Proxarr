@@ -2,7 +2,6 @@
 {
     public static class ArrExtensions
     {
-
         public static Radarr.Http.Client.TagResource? Slugify(this Radarr.Http.Client.TagResource tagResource)
         {
             ArgumentNullException.ThrowIfNull(tagResource);

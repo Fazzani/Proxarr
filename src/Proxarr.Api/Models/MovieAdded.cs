@@ -1,7 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Proxarr.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class MovieAdded : MediaAdded
     {
         [JsonPropertyName("movie")]
@@ -11,6 +13,7 @@ namespace Proxarr.Api.Models
         public string? AddMethod { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class Movie
     {
         [JsonPropertyName("id")]

@@ -54,13 +54,15 @@ namespace Proxarr.Api.Configuration
                 {
                     throw new FormatException("Malformed WATCH_PROVIDERS! Must follow this format: REGION:WatchProvider, REGION:WatchProvider, ... ex (US:Netflix,FR:Youtube)");
                 }
-                if (!dict.TryGetValue(parts[0], out string[]? value))
+                var key = parts[0].Trim();
+                var val = parts[1].Trim();
+                if (!dict.TryGetValue(key, out string[]? value) || !dict.ContainsKey(key))
                 {
-                    dict.Add(parts[0].Trim(), [parts[1].Trim()]);
+                    dict.Add(key, [val]);
                 }
                 else
                 {
-                    dict[parts[0]] = [.. value, parts[1].Trim()];
+                    dict[key] = [.. value, val];
                 }
             }
 

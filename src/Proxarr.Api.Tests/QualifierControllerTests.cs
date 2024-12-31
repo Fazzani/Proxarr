@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Proxarr.Api.Controllers;
@@ -33,7 +34,21 @@ namespace Proxarr.Api.Tests
             var result = await _controller.Qualified(media, cancellationToken);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [Fact]
+        public async Task Qualified_ShouldReturnOk_WhenEventTypeMovieAdded()
+        {
+            // Arrange
+            var media = new MovieAdded { EventType = "MovieAdded", ApplicationUrl = "http://localhost", Movie=default };
+            var cancellationToken = new CancellationToken();
+
+            // Act
+            var result = await _controller.Qualified(media, cancellationToken);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
         }
 
         [Fact]
@@ -49,7 +64,7 @@ namespace Proxarr.Api.Tests
             var result = await _controller.Qualified(movie, cancellationToken);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result);
+            result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
@@ -65,7 +80,7 @@ namespace Proxarr.Api.Tests
             var result = await _controller.Qualified(tvAdded, cancellationToken);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result);
+            result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
@@ -79,7 +94,7 @@ namespace Proxarr.Api.Tests
             var result = await _controller.Qualified(media, cancellationToken);
 
             // Assert
-            Assert.IsType<BadRequestResult>(result);
+            result.Should().BeOfType<BadRequestResult>();
         }
 
         [Fact]
@@ -95,7 +110,7 @@ namespace Proxarr.Api.Tests
             var result = await _controller.Qualified(tvAdded, cancellationToken);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            result.Should().BeOfType<OkResult>();
         }
     }
 }
