@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Proxarr.Api.Core
+namespace Proxarr.Api.Core.Http
 {
     [ExcludeFromCodeCoverage]
     public class ExceptionToProblemDetailsHandler : Microsoft.AspNetCore.Diagnostics.IExceptionHandler

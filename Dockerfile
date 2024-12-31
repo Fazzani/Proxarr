@@ -1,3 +1,7 @@
+ARG GIT_VERSION_TAG
+ARG GIT_COMMIT_MESSAGE=unspecified
+ARG GIT_VERSION_HASH=unspecified
+
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
@@ -25,7 +29,7 @@ RUN dotnet build "./Proxarr.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Proxarr.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Proxarr.Api.csproj" -c $BUILD_CONFIGURATION -p:Version=${GIT_VERSION_TAG:-1.0.0} -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
