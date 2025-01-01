@@ -13,7 +13,11 @@ namespace Proxarr.Api.Core.Http
     [ExcludeFromCodeCoverage]
     public class BasicAuthenticationDefaults
     {
-        public const string AuthenticationScheme = "Basic";
+        protected BasicAuthenticationDefaults()
+        {
+        }
+
+        public static string AuthenticationScheme { get; } = "Basic";
     }
 
     [ExcludeFromCodeCoverage]

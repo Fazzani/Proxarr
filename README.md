@@ -65,22 +65,22 @@ It uses TMDB to find out which streaming services are available in the selected 
 
 * Acquire TMDB API KEY
   [How](https://dev.to/codexive_zech/streamlining-your-contribution-how-to-get-your-tmdb-api-key-for-ldbflix-contribution-52gf#:~:text=How%20to%20Obtain%20a%20TMDB%20API%20Key)
-* Obtain SONARR/RADARR API KEY<br/>
-  <img src="images/arr_api_key.png" width="230">
+* Obtain SONARR/RADARR API KEY
+  <br/><img src="images/arr_api_key.png" width="230">
 
 ### Installation with Docker compose
 
 1. Prepare your [config.yml][config-yml] to fit your setup
 2. On your Radarr/Sonarr instances we have to do some changes
-   - tag all indexers by the TAG_NAME defined in your [config.yml][config-yml] (`q` by default)<br/>
-     <img src="images/tagging-indexers.png" width="250" alt="tag indexers" />
+   - tag all indexers by the TAG_NAME defined in your [config.yml][config-yml] (`q` by default)
+     <br/><img src="images/tagging-indexers.png" width="250" alt="tag indexers" />
    - specify Application URL: is essential because it is used by Proxarr to determine to which instance should return the response<br/>
      <img src="images/application_url.png" width="250" alt="Application Url config"/>
-   - establish a Webhook connection between Sonarr/Radarr and Proxarr<br/>
-     <img src="images/webhook_config.png" width="250" alt="Application Url config"/><br/>
-     _Note_ : Webhook URL is `http://<Proxarr_Instance>/api/qualifier
-3. Add the following to your docker-compose.yml (to be adapted according to your stack)<br/>
-   [docker-compose.yml](docker-compose.yml) is an another full example of how to integrate Proxarr with Sonarr and Radarr.
+   - establish a Webhook connection between Sonarr/Radarr and Proxarr
+     <br/><img src="images/webhook_config.png" width="250" alt="Application Url config"/>
+     <br/>_Note_ : Webhook URL is `http://<Proxarr_Instance>/api/qualifier
+3. Add the following to your docker-compose.yml (to be adapted according to your stack)
+   <br/>[docker-compose.yml](docker-compose.yml) is an another full example of how to integrate Proxarr with Sonarr and Radarr.
    ```yaml
       proxarr:
         image: synker/proxarr:latest
@@ -117,7 +117,11 @@ It uses TMDB to find out which streaming services are available in the selected 
 docker run -itd --rm -e LOG_LEVEL=Debug -p 8880:8880 -v ${PWD}/config:/app/config --name proxarr synker/proxarr:latest
 ```
 
-<p align="right"><a href="#readme-top"><img src="images/back-to-top.png" alt="back to top" width="35" /></a></p>
+<p align="right">
+    <a href="#readme-top">
+        <img src="images/back-to-top.png" alt="back to top" width="35" />
+    </a>
+</p>
 
 ### Watching providers configuration
 

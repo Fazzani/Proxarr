@@ -61,7 +61,7 @@ namespace Proxarr.Api.Services
             _logger.LogInformation("Qualifying movie {Title}", movieAdded.Movie.Title);
 
             var tmdbItem = await _tMDbClient
-                .GetMovieAsync(movieAdded.Movie.TmdbId, TMDbLib.Objects.Movies.MovieMethods.WatchProviders, cancellationToken)
+                .GetMovieAsync(movieAdded.Movie.TmdbId, cancellationToken, TMDbLib.Objects.Movies.MovieMethods.WatchProviders)
                 .ConfigureAwait(false);
 
             if (tmdbItem != null)
@@ -135,7 +135,7 @@ namespace Proxarr.Api.Services
             {
                 _logger.LogInformation("Adding tag {Tag} for {Title}", tag.Label, movieRadarr.Title);
                 movieRadarr.Tags.Add(tag.Id);
-                updated = true;
+                return true;
             }
 
             return updated;

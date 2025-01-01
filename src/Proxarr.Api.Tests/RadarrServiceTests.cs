@@ -61,7 +61,7 @@ namespace Proxarr.Api.Tests
             };
             var cancellationToken = new CancellationToken();
 
-            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, cancellationToken, MovieMethods.WatchProviders))
                 .ReturnsAsync(new TMDbLib.Objects.Movies.Movie { WatchProviders = new SingleResultContainer<Dictionary<string, WatchProviders>> { Results = [] } });
 
             _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
@@ -86,7 +86,7 @@ namespace Proxarr.Api.Tests
             };
             var cancellationToken = new CancellationToken();
 
-            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, cancellationToken, MovieMethods.WatchProviders))
                 .ReturnsAsync((TMDbLib.Objects.Movies.Movie)null);
 
             _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
@@ -121,7 +121,7 @@ namespace Proxarr.Api.Tests
 
             var seriesResource = new MovieResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, cancellationToken, MovieMethods.WatchProviders))
                 .ReturnsAsync(new TMDbLib.Objects.Movies.Movie { WatchProviders = watchProviders });
 
             _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
@@ -163,7 +163,7 @@ namespace Proxarr.Api.Tests
 
             var movieResource = new MovieResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, cancellationToken, MovieMethods.WatchProviders))
                 .ReturnsAsync(new TMDbLib.Objects.Movies.Movie { WatchProviders = watchProviders });
 
             _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
@@ -210,7 +210,7 @@ namespace Proxarr.Api.Tests
 
             var movieResource = new MovieResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, cancellationToken, MovieMethods.WatchProviders))
                 .ReturnsAsync(new TMDbLib.Objects.Movies.Movie { WatchProviders = watchProviders });
 
             _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))
@@ -246,10 +246,9 @@ namespace Proxarr.Api.Tests
             };
             var cancellationToken = new CancellationToken();
 
-
             var movieResource = new MovieResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, MovieMethods.WatchProviders, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetMovieAsync(123, cancellationToken, MovieMethods.WatchProviders))
                 .ReturnsAsync(new TMDbLib.Objects.Movies.Movie());
 
             _radarrClientMock.Setup(x => x.MovieGET2Async(1, cancellationToken))

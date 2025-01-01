@@ -38,4 +38,9 @@ If you have a suggestion that would make this better, please fork the repo and c
    ```sh
    dotnet run ./src/Proxarr.Api/Proxarr.Api.csproj
    ```
-<p align="right"><a href="#readme-top"><img src="images/back-to-top.png" alt="back to top" width="35" /></a></p>
+
+<p align="right">
+    <a href="#readme-top">
+        <img src="images/back-to-top.png" alt="back to top" width="35" />
+    </a>
+</p>

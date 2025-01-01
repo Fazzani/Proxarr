@@ -7,8 +7,10 @@ namespace Proxarr.Api.Core
 {
     public interface ITmdbProxy
     {
-        Task<Movie> GetMovieAsync(int movieId, MovieMethods extraMethods = MovieMethods.Undefined, CancellationToken cancellationToken = default);
-        Task<TvShow> GetTvShowAsync(int id, TvShowMethods extraMethods = TvShowMethods.Undefined, string language = null, string includeImageLanguage = null, CancellationToken cancellationToken = default);
+        Task<Movie> GetMovieAsync(int movieId, MovieMethods extraMethods = MovieMethods.Undefined);
+        Task<Movie> GetMovieAsync(int movieId, CancellationToken cancellationToken, MovieMethods extraMethods = MovieMethods.Undefined);
+        Task<TvShow> GetTvShowAsync(int id, TvShowMethods extraMethods = TvShowMethods.Undefined);
+        Task<TvShow> GetTvShowAsync(int id, CancellationToken cancellationToken, TvShowMethods extraMethods = TvShowMethods.Undefined);
     }
 
     [ExcludeFromCodeCoverage]
@@ -22,12 +24,22 @@ namespace Proxarr.Api.Core
             _tMDbClient = tMDbClient;
         }
 
-        public Task<TvShow> GetTvShowAsync(int id, TvShowMethods extraMethods = TvShowMethods.Undefined, string language = null, string includeImageLanguage = null, CancellationToken cancellationToken = default)
+        public Task<TvShow> GetTvShowAsync(int id, TvShowMethods extraMethods = TvShowMethods.Undefined)
         {
-            return _tMDbClient.GetTvShowAsync(id, extraMethods, language, includeImageLanguage, cancellationToken);
+            return _tMDbClient.GetTvShowAsync(id, extraMethods, null, null, CancellationToken.None);
         }
 
-        public Task<Movie> GetMovieAsync(int movieId, MovieMethods extraMethods = MovieMethods.Undefined, CancellationToken cancellationToken = default)
+        public Task<TvShow> GetTvShowAsync(int id,  CancellationToken cancellationToken, TvShowMethods extraMethods = TvShowMethods.Undefined)
+        {
+            return _tMDbClient.GetTvShowAsync(id, extraMethods, null, null, cancellationToken);
+        }
+
+        public Task<Movie> GetMovieAsync(int movieId, MovieMethods extraMethods = MovieMethods.Undefined)
+        {
+            return _tMDbClient.GetMovieAsync(movieId, extraMethods, CancellationToken.None);
+        }
+
+        public Task<Movie> GetMovieAsync(int movieId, CancellationToken cancellationToken, MovieMethods extraMethods = MovieMethods.Undefined)
         {
             return _tMDbClient.GetMovieAsync(movieId, extraMethods, cancellationToken);
         }

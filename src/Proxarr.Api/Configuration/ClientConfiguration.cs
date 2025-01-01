@@ -5,7 +5,7 @@ namespace Proxarr.Api.Configuration
     [ExcludeFromCodeCoverage]
     public sealed class ClientConfiguration
     {
-        public const string SECTION_NAME = $"{AppConfiguration.SECTION_NAME}:Clients";
+        public static string SECTION_NAME { get; } = $"{AppConfiguration.SECTION_NAME}:Clients";
 
         /// <summary>
         /// Must be Sonarr or Radarr

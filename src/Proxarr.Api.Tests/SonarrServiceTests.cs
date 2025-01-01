@@ -60,7 +60,7 @@ namespace Proxarr.Api.Tests
             };
             var cancellationToken = new CancellationToken();
 
-            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, cancellationToken, TvShowMethods.WatchProviders))
                 .ReturnsAsync(new TvShow { WatchProviders = new SingleResultContainer<Dictionary<string, WatchProviders>> { Results = [] } });
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
@@ -85,7 +85,7 @@ namespace Proxarr.Api.Tests
             };
             var cancellationToken = new CancellationToken();
 
-            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, cancellationToken, TvShowMethods.WatchProviders))
                 .ReturnsAsync((TvShow)null);
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
@@ -120,7 +120,7 @@ namespace Proxarr.Api.Tests
 
             var seriesResource = new SeriesResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, cancellationToken, TvShowMethods.WatchProviders))
                 .ReturnsAsync(new TvShow { WatchProviders = watchProviders });
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
@@ -162,7 +162,7 @@ namespace Proxarr.Api.Tests
 
             var seriesResource = new SeriesResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, cancellationToken, TvShowMethods.WatchProviders))
                 .ReturnsAsync(new TvShow { WatchProviders = watchProviders });
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
@@ -208,7 +208,7 @@ namespace Proxarr.Api.Tests
 
             var seriesResource = new SeriesResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, cancellationToken, TvShowMethods.WatchProviders))
                .ReturnsAsync(new TvShow { WatchProviders = watchProviders });
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
@@ -244,8 +244,8 @@ namespace Proxarr.Api.Tests
 
             var seriesResource = new SeriesResource { Id = 1, Title = "Test Series", Tags = [] };
 
-            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, TvShowMethods.WatchProviders, null, null, cancellationToken))
-               .ReturnsAsync(new TvShow ());
+            _tmdbClientMock.Setup(x => x.GetTvShowAsync(123, cancellationToken, TvShowMethods.WatchProviders))
+               .ReturnsAsync(new TvShow());
 
             _sonarrClientMock.Setup(x => x.SeriesGETAsync(1, false, cancellationToken))
                 .ReturnsAsync(seriesResource);

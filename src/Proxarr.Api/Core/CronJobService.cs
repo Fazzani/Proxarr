@@ -28,10 +28,15 @@ namespace Proxarr.Api.Core
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     var next = _expression.GetNextOccurrence(DateTimeOffset.Now, timeZoneInfo);
-                    if (!next.HasValue) continue;
+
+                    if (!next.HasValue)
+                    {
+                        continue;
+                    }
 
                     logger.LogInformation("{JobName}: scheduled next run at {NextRun}", GetType().Name, next.ToString());
                     var delay = next.Value - DateTimeOffset.Now;
+
                     if (delay.TotalMilliseconds <= 0) // prevent non-positive values from being passed into Timer
                     {
                         logger.LogInformation("{LoggerName}: scheduled next run is in the past. Moving to next.", GetType().Name);
