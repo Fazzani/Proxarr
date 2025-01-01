@@ -8,9 +8,11 @@
 
 [![Docker](https://github.com/Fazzani/Proxarr/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Fazzani/Proxarr/actions/workflows/docker-image.yml)
 [![.NET](https://github.com/Fazzani/Proxarr/actions/workflows/pr.yml/badge.svg)](https://github.com/Fazzani/Proxarr/actions/workflows/pr.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bdc561c35a1e4df6bce3ff828fa21e77)](https://app.codacy.com/gh/Fazzani/Proxarr/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ![Docker Pulls](https://img.shields.io/docker/pulls/synker/proxarr)
 
+[API Reference][api-reference]
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -167,3 +169,4 @@ For further information, [click here](CONTRIBUTING.md)
 [linkedin-url]: https://www.linkedin.com/in/heni-fazzani
 [arr-api-key]: images/arr_api_key.png
 [config-yml]: ./src/Proxarr.Api/config.yml
+[api-reference]:https://proxarr.apidocumentation.com/reference
