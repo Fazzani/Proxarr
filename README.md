@@ -6,6 +6,7 @@
 [![project_license][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c9300c7d34094d6e929a9e18a8ed07ee)](https://app.codacy.com/gh/Fazzani/Proxarr?utm_source=github.com&utm_medium=referral&utm_content=Fazzani/Proxarr&utm_campaign=Badge_Grade)
 [![Docker](https://github.com/Fazzani/Proxarr/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Fazzani/Proxarr/actions/workflows/docker-image.yml)
 [![.NET](https://github.com/Fazzani/Proxarr/actions/workflows/pr.yml/badge.svg)](https://github.com/Fazzani/Proxarr/actions/workflows/pr.yml)
 
