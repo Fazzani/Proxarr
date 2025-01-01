@@ -61,7 +61,7 @@ namespace Proxarr.Api.Services
             _logger.LogInformation("Qualifying tv {Title}", tvAdded.Series.Title);
 
             var tmdbItem = await _tMDbClient
-                .GetTvShowAsync(tvAdded.Series.TmdbId, TMDbLib.Objects.TvShows.TvShowMethods.WatchProviders, cancellationToken: cancellationToken)
+                .GetTvShowAsync(tvAdded.Series.TmdbId, cancellationToken, TMDbLib.Objects.TvShows.TvShowMethods.WatchProviders)
                 .ConfigureAwait(false);
 
             if (tmdbItem != null)
@@ -135,7 +135,7 @@ namespace Proxarr.Api.Services
             {
                 _logger.LogInformation("Adding tag {Tag} for {Title}", tag.Label, seriesSonarr.Title);
                 seriesSonarr.Tags.Add(tag.Id);
-                updated = true;
+                return true;
             }
 
             return updated;

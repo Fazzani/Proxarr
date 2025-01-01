@@ -56,3 +56,9 @@ jobs:
       with:
         recreate: true
         path: code-coverage-results.md
+
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: coverage/**/coverage.cobertura.xml
