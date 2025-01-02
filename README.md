@@ -150,7 +150,9 @@ Don't forget to give the project a :star: star :star: ! Thanks again!
 
 For further information, [click here](CONTRIBUTING.md)
 
-### Top contributors:
+### Top contributors
+
+[![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-yellow.svg)](https://www.buymeacoffee.com/fazzani)
 
 <a href="https://github.com/Fazzani/Proxarr/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Fazzani/Proxarr" alt="contrib.rocks image" />
